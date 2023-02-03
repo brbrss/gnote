@@ -1,5 +1,5 @@
 back/node_modules/*
-back/spike.js
+back/tools/*
 back/.env
 
 front/node_modules/*
