@@ -11,6 +11,7 @@ db.config = {
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
 };
+
 db.connect = async function () {
     db.client = new Client(db.config);
     db.client.connect();
@@ -21,14 +22,25 @@ db.disconnect = async function () {
     await db.client.end();
 }
 
-db.create = async function () {
-    const sql = await fs.readFile('./model/init.sql', { encoding: 'utf8' });
+db.execfile = async function (fpath) {
+    const sql = await fs.readFile(fpath, { encoding: 'utf8' });
     return await db.client.query(sql);
 }
 
+db.create = async function () {
+    const fplist = [
+        './sql/init.sql',
+        './sql/geo_entity.sql',
+        './sql/geo_point.sql',
+        './sql/note.sql'
+    ];
+    for (const fp of fplist) {
+        await db.execfile(fp);
+    }
+}
+
 db.drop = async function () {
-    const sql = await fs.readFile('./model/drop.sql', { encoding: 'utf8' });
-    return await db.client.query(sql);
+    await db.execfile('./sql/drop.sql');
 }
 
 module.exports = db;
