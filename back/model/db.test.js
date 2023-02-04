@@ -22,3 +22,8 @@ test('init and destroy schema', async () => {
     await db.drop();
 });
 
+test('db select hello', async () => {
+    const val = 'hello';
+    const res = await db.client.query('SELECT $1 as qwe;',[val]);
+    expect(res.rows[0]['qwe']).toBe(val);
+});
