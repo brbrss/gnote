@@ -15,6 +15,17 @@ afterAll(async () => {
     await db.disconnect();
 });
 
+beforeEach(async () => {
+
+});
+
+afterEach(async () => {
+    const sql = `delete FROM projnote.geo_point;
+    delete FROM projnote.geo_entity;
+    ;`;
+    await db.client.query(sql);
+});
+
 test('add point', async () => {
     {
         const res = await Point.add('Ottawa', 45, -75, 'This is Ottawa!');
@@ -27,14 +38,27 @@ test('add point', async () => {
 });
 
 test('find point', async () => {
-    {
-        const insertedId = await Point.add('Some', 14, -56, 'bababa');
-        const res = await Point.find(insertedId);
-        expect(res.myid).toBe(insertedId);
-        expect(res.myname).toBe('Some');
-        expect(res.textcontent).toBe('bababa');
-
-    }
+    const id1 = await Point.add('hehe', 14, -56, null);
+    const id2 = await Point.add('Some', 14, -56, 'bababa');
+    let res = await Point.find(id2);
+    expect(res.myid).toBe(id2);
+    expect(res.myname).toBe('Some');
+    expect(res.textcontent).toBe('bababa');
+    res = await Point.find(id1);
+    expect(res.textcontent).toBe(null);
+    expect(res.myid).toBe(id1);
 });
 
+test('find all', async () => {
 
+    await Point.add('Some1', 14, -56, 'bababa1');
+    await Point.add('Some2', 14, -56, 'bababa2');
+    await Point.add('Some3', 14, -56, 'bababa3');
+
+    const res = await Point.all();
+    expect(res.length).toBe(3);
+    expect(res[0].myname).toBe('Some1');
+    expect(res[1].myname).toBe('Some2');
+    expect(res[2].myname).toBe('Some3');
+
+});

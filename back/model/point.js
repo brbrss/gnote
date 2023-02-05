@@ -38,4 +38,20 @@ Point.find = async function (id) {
     return res.rows[0];
 }
 
+Point.all = async function () {
+    const sql = `
+        SELECT 
+            projnote.geo_entity.myid AS myid,
+            projnote.geo_entity.myname AS myname,
+            projnote.geo_entity.textcontent AS textcontent,
+            projnote.geo_point.shape AS shape
+        FROM projnote.geo_entity 
+        LEFT JOIN projnote.geo_point
+        on projnote.geo_entity.myid=projnote.geo_point.entity_id
+        ;
+    `;
+    const res = await Point.client.query(sql);
+    return res.rows;
+}
+
 module.exports = Point;
