@@ -8,6 +8,8 @@ beforeAll(async () => {
     await db.connect();
     await db.create();
     Note.client = db.client;
+
+    await Note.init();
 });
 
 afterAll(async () => {
@@ -24,7 +26,23 @@ afterEach(async () => {
 });
 
 test('init', async () => {
-    await Note.init();
     expect(Note.sql['add']).toBeTruthy();
     expect(Note.sql['foo']).toBeUndefined();
 });
+
+test('update', async () => {
+    const id = await Note.add('bb', null, null);
+    const res = await Note.update(id, 'bb', null, new Date(1900, 3, 5));
+    expect(res).toBe(1);
+});
+
+test('update not found', async () => {
+      const res = await Note.update(9999, 'bb', null, new Date(1900, 3, 5));
+    expect(res).toBe(0);
+});
+
+test('delete', async () => {
+    const res = await Note.remove(24565);
+    expect(res).toBe(0);
+});
+
