@@ -49,6 +49,11 @@ test('find point', async () => {
     expect(res.myid).toBe(id1);
 });
 
+test('find not found', async () => {
+    let res = await Point.find(9999);
+});
+
+
 test('find all', async () => {
 
     await Point.add('Some1', 14, -56, 'bababa1');
