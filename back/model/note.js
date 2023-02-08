@@ -7,7 +7,8 @@ const Note = {};
 const fplist = {
     add: './sql/note/add.sql',
     update: './sql/note/update.sql',
-    delete: './sql/note/delete.sql'
+    delete: './sql/note/delete.sql',
+    find: './sql/note/find.sql'
 };
 
 Note.init = async function () {
@@ -46,5 +47,10 @@ Note.remove = async function (id) {
     return res.rowCount;
 }
 
+Note.find = async function (fid) {
+    const sql = Note.sql['find'];
+    const res = await Note.client.query(sql, [id]);
+    return res.rowCount;
+}
 
 module.exports = Note;

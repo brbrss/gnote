@@ -11,4 +11,4 @@ CREATE TABLE IF NOT EXISTS projnote.note
         REFERENCES projnote.geo_entity (myid) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
