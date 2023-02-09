@@ -34,7 +34,7 @@ Note.update = async function (id, text, geo, time) {
     return res.rowCount;
 }
 
-Note.remove = async function (id) {
+Note.delete = async function (id) {
     const sql = Note.sql['delete'];
     const res = await Note.client.query(sql, [id]);
     return res.rowCount;

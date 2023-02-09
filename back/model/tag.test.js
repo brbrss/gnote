@@ -35,3 +35,31 @@ test('init', async () => {
     expect(Tag.sql['update']).toBeTruthy();
     expect(Tag.sql['find']).toBeTruthy();
 });
+
+test('add', async () => {
+    const name = 'Moo';
+    const desc = 'Some moo';
+    const id = await Tag.add(name, desc);
+    const res = await Tag.find(id);
+    expect(res.name).toBe(name);
+    expect(res.description).toBe(desc);
+});
+
+test('update', async () => {
+    const name = 'Moo';
+    const desc = 'Some moo';
+    const id = await Tag.add(name, 'wwwrong');
+    await Tag.update(id, name, desc);
+    const res = await Tag.find(id);
+    expect(res.name).toBe(name);
+    expect(res.description).toBe(desc);
+});
+
+test('delete', async () => {
+    const name = 'Moo';
+    const desc = 'Some moo';
+    const id = await Tag.add(name, desc);
+    const res = await Tag.delete(id);
+    expect(res).toBe(1);
+    expect(await Tag.delete(999)).toBe(0);
+});

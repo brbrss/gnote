@@ -17,14 +17,25 @@ Tag.init = async function () {
 
 Tag.add = async function (name, description) {
     description = description ? description : null;
-    const res = await this.client.query(this.sql['add'], [name, lon, lat, comment]);
-    return res.rows[0]['entity_id'];
+    const res = await this.client.query(this.sql['add'], [name, description]);
+    return res.rows[0]['my_id'];
 }
 
-Tag.find = async function (name, description) {
+Tag.find = async function (id) {
+    const res = await this.client.query(this.sql['find'], [id]);
+    const entry = res.rows[0];
+    return { id: entry.my_id, name: entry.tag_name, description: entry.tag_description };
+}
+
+Tag.delete = async function (id) {
+    const res = await this.client.query(this.sql['delete'], [id]);
+    return res.rowCount;
+}
+
+Tag.update = async function (id, name, description) {
     description = description ? description : null;
-    const res = await this.client.query(this.sql['find'], [name, lon, lat, comment]);
-    return res.rows[0]['entity_id'];
+    const res = await this.client.query(this.sql['update'], [id, name, description]);
+    return res.rowCount;
 }
 
 module.exports = Tag;

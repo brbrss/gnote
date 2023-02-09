@@ -41,12 +41,15 @@ test('update', async () => {
 });
 
 test('update not found', async () => {
-      const res = await Note.update(9999, 'bb', null, new Date(1900, 3, 5));
+    const res = await Note.update(9999, 'bb', null, new Date(1900, 3, 5));
     expect(res).toBe(0);
 });
 
 test('delete', async () => {
-    const res = await Note.remove(24565);
-    expect(res).toBe(0);
+    const res1 = await Note.delete(24565);
+    expect(res1).toBe(0);
+    const id = await Note.add('aaaaaaa', null, new Date(1950, 6, 13));
+    const res2 = await Note.delete(id);
+    expect(res2).toBe(1);
 });
 
