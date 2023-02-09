@@ -1,6 +1,7 @@
 const { expect, test } = require('@jest/globals');
 const db = require('./db');
 const Tag = require('./tag');
+const Note = require('./note');
 require('dotenv').config();
 
 beforeAll(async () => {
@@ -12,7 +13,8 @@ beforeAll(async () => {
     await db.execfile('./sql/note.sql');
     await db.execfile('./sql/tag.sql');
     Tag.client = db.client;
-
+    Note.client = db.client;
+    await Note.init();
     await Tag.init();
 });
 
@@ -45,6 +47,11 @@ test('add', async () => {
     expect(res.description).toBe(desc);
 });
 
+test('add null', async () => {
+    const desc = 'Some moo';
+    await expect(Tag.add(null, desc)).rejects.toThrow();
+});
+
 test('update', async () => {
     const name = 'Moo';
     const desc = 'Some moo';
@@ -62,4 +69,39 @@ test('delete', async () => {
     const res = await Tag.delete(id);
     expect(res).toBe(1);
     expect(await Tag.delete(999)).toBe(0);
+});
+
+test('tag note', async () => {
+    const id = await Note.add('note text', null, null);
+    const good = await Tag.add('good', 'so good');
+    const bad = await Tag.add('bad', 'so bad');
+    const ugly = await Tag.add('ugly', 'so ugly');
+    // tag note
+    expect(await Tag.addToNote(id, bad)).toBe(1);
+    await Tag.addToNote(id, good);
+    // note has tag
+    {
+        const res = await Tag.findByNote(id);
+        expect(res).toEqual(['bad', 'good']);
+    }
+    await Tag.removeFromNote(id,bad);
+    {
+        const res = await Tag.findByNote(id);
+        expect(res).toEqual(['good']);
+    }
+    // tag relation should be deleted when note is deleted
+    await Note.delete(id);
+    {
+        const res = await Tag.findByNote(id);
+        expect(res).toEqual([]);
+    }
+});
+
+test('no unique tag in note', async () => {
+    const id = await Note.add('note text', null, null);
+    const good = await Tag.add('good', 'so good');
+
+    await Tag.addToNote(id, good);
+      
+    await expect(Tag.addToNote(id, good)).rejects.toThrow();
 });

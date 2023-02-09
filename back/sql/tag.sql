@@ -14,10 +14,11 @@ CREATE TABLE IF NOT EXISTS projnote.note_tag
     CONSTRAINT FK_note FOREIGN KEY (note_id)
         REFERENCES projnote.note (myid) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
+        ON DELETE CASCADE,
     CONSTRAINT FK_tag FOREIGN KEY (tag_id)
         REFERENCES projnote.tag (my_id) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION    
+        ON DELETE CASCADE,
+    CONSTRAINT unique_pair UNIQUE (note_id, tag_id)
 );
 
