@@ -8,6 +8,7 @@ beforeAll(async () => {
     await db.connect();
     await db.create();
     Point.client = db.client;
+    await Point.init();
 });
 
 afterAll(async () => {

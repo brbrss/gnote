@@ -1,4 +1,5 @@
-const fs = require('fs/promises');
+const loadSql = require('./loadSql');
+
 
 
 const Note = {};
@@ -11,18 +12,10 @@ const fplist = {
     find: './sql/note/find.sql'
 };
 
+
+
 Note.init = async function () {
-    Note.sql = {};
-    async function load(name, fp) {
-        const str = await fs.readFile(fp, { encoding: 'utf8' });
-        Note.sql[name] = str;
-    }
-    const promiseArr = [];
-    for (const name in fplist) {
-        const promise = load(name, fplist[name]);
-        promiseArr.push(promise);
-    }
-    await Promise.all(promiseArr);
+    await loadSql(Note, fplist);
 }
 
 Note.add = async function (text, geo, time) {
