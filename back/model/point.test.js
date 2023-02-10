@@ -81,7 +81,6 @@ test('find all paginage default', async () => {
 
     {
         const res = await Point.all(0);
-        console.log(res);
         expect(res.length).toBe(10);
         expect(res[0].myname).toBe('pt0');
         expect(res[9].myname).toBe('pt9');

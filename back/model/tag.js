@@ -19,9 +19,10 @@ Tag.init = async function () {
     await loadSql(Tag, fplist);
 }
 
-Tag.add = async function (name, description) {
+Tag.add = async function (name, description, parent_id) {
     description = description ? description : null;
-    const res = await this.client.query(this.sql['add'], [name, description]);
+    parent_id = parent_id ? parent_id : null;
+    const res = await this.client.query(this.sql['add'], [name, description, parent_id]);
     return res.rows[0]['my_id'];
 }
 
@@ -36,9 +37,10 @@ Tag.delete = async function (id) {
     return res.rowCount;
 }
 
-Tag.update = async function (id, name, description) {
+Tag.update = async function (id, name, description, parent_id) {
     description = description ? description : null;
-    const res = await this.client.query(this.sql['update'], [id, name, description]);
+    parent_id = parent_id ? parent_id : null;
+    const res = await this.client.query(this.sql['update'], [id, name, description, parent_id]);
     return res.rowCount;
 }
 
