@@ -11,6 +11,6 @@ order by
 		else 'n'
   	END,
     tag_name
-limit 10
+limit $2
 
 ;

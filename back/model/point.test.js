@@ -20,14 +20,14 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-
-});
-
-afterEach(async () => {
     const sql = `delete FROM projnote.geo_point;
     delete FROM projnote.geo_entity;
     ;`;
     await db.client.query(sql);
+});
+
+afterEach(async () => {
+
 });
 
 test('add point', async () => {
@@ -70,4 +70,54 @@ test('find all', async () => {
     expect(res[1].myname).toBe('Some2');
     expect(res[2].myname).toBe('Some3');
 
+});
+
+test('find all paginage default', async () => {
+    for (let i = 0; i < 100; i++) {
+        let s = 'pt' + String(i);
+        let desc = 'desc' + String(i);
+        await Point.add(s, i, -i, 'bababa1');
+    }
+
+    {
+        const res = await Point.all(0);
+        console.log(res);
+        expect(res.length).toBe(10);
+        expect(res[0].myname).toBe('pt0');
+        expect(res[9].myname).toBe('pt9');
+    }
+    {
+        const res = await Point.all(10);
+        expect(res.length).toBe(10);
+        expect(res[0].myname).toBe('pt10');
+        expect(res[9].myname).toBe('pt19');
+    }
+    {
+        const res = await Point.all(90);
+        expect(res.length).toBe(10);
+        expect(res[0].myname).toBe('pt90');
+        expect(res[9].myname).toBe('pt99');
+    }
+
+});
+
+test('find all paginage', async () => {
+    for (let i = 0; i < 100; i++) {
+        let s = 'pt' + String(i);
+        let desc = 'desc' + String(i);
+        await Point.add(s, i, -i, 'bababa1');
+    }
+
+    {
+        const res = await Point.all(33, 4);
+        expect(res.length).toBe(4);
+        expect(res[0].myname).toBe('pt33');
+        expect(res[3].myname).toBe('pt36');
+    }
+    {
+        const res = await Point.all(37, 4);
+        expect(res.length).toBe(4);
+        expect(res[0].myname).toBe('pt37');
+        expect(res[3].myname).toBe('pt40');
+    }
 });

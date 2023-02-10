@@ -1,5 +1,5 @@
 const loadSql = require('./loadSql');
-
+const toNumber = require('../util/convert');
 
 
 const Point = {};
@@ -26,8 +26,11 @@ Point.find = async function (id) {
     return res.rows[0];
 }
 
-Point.all = async function () {
-    const res = await Point.client.query(Point.sql['all']);
+Point.all = async function (offset, limit) {
+    offset = toNumber(offset, 0);
+    limit = toNumber(limit, 10);
+
+    const res = await Point.client.query(Point.sql['all'], [offset, limit]);
     return res.rows;
 }
 

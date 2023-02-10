@@ -121,7 +121,15 @@ test('tag search', async () => {
         await Tag.add(k, d[k]);
     }
 
-    const res = await Tag.textSearch('xy');
-    const target = ['xya', 'xyb', 'bad 00xyp', 'real xyi', 'a4', 'b'];
-    expect(res.map(obj => obj.tag_name)).toEqual(target);
+    {
+        const res = await Tag.textSearch('xy', 10);
+        const target = ['xya', 'xyb', 'bad 00xyp', 'real xyi', 'a4', 'b'];
+        expect(res.map(obj => obj.tag_name)).toEqual(target);
+    }
+    {
+        const res = await Tag.textSearch('xy', 3);
+        const target = ['xya', 'xyb', 'bad 00xyp'];
+        expect(res.map(obj => obj.tag_name)).toEqual(target);
+    }
+
 });

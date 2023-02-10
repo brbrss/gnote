@@ -42,24 +42,24 @@ Tag.update = async function (id, name, description) {
     return res.rowCount;
 }
 
-Tag.removeFromNote = async function(noteId,tagId){
-    const res = await this.client.query(this.sql['removeFromNote'], [noteId,tagId]);
+Tag.removeFromNote = async function (noteId, tagId) {
+    const res = await this.client.query(this.sql['removeFromNote'], [noteId, tagId]);
     return res.rowCount;
 }
 
-Tag.addToNote = async function(noteId,tagId){
-    const res = await this.client.query(this.sql['addToNote'], [noteId,tagId]);
+Tag.addToNote = async function (noteId, tagId) {
+    const res = await this.client.query(this.sql['addToNote'], [noteId, tagId]);
     return res.rowCount;
 }
 
-Tag.findByNote = async function(noteId){
+Tag.findByNote = async function (noteId) {
     const res = await this.client.query(this.sql['findByNote'], [noteId]);
     //return res.rows.map(obj=>obj.tag_name);
     return res.rows;
 }
 
-Tag.textSearch = async function(str){
-    const res = await this.client.query(this.sql['textSearch'], [str]);
+Tag.textSearch = async function (str, limit) {
+    const res = await this.client.query(this.sql['textSearch'], [str, limit]);
     return res.rows
 }
 
