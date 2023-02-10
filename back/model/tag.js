@@ -11,7 +11,8 @@ const fplist = {
     find: './sql/tag/find.sql',
     findByNote: './sql/tag/findByNote.sql',
     addToNote: './sql/tag/addToNote.sql',
-    removeFromNote: './sql/tag/removeFromNote.sql'
+    removeFromNote: './sql/tag/removeFromNote.sql',
+    textSearch: './sql/tag/textSearch.sql'
 };
 
 Tag.init = async function () {
@@ -53,8 +54,13 @@ Tag.addToNote = async function(noteId,tagId){
 
 Tag.findByNote = async function(noteId){
     const res = await this.client.query(this.sql['findByNote'], [noteId]);
-    return res.rows.map(obj=>obj.tag_name);
-    //return res.rows;
+    //return res.rows.map(obj=>obj.tag_name);
+    return res.rows;
+}
+
+Tag.textSearch = async function(str){
+    const res = await this.client.query(this.sql['textSearch'], [str]);
+    return res.rows
 }
 
 module.exports = Tag;

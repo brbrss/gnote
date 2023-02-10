@@ -82,18 +82,18 @@ test('tag note', async () => {
     // note has tag
     {
         const res = await Tag.findByNote(id);
-        expect(res).toEqual(['bad', 'good']);
+        expect(res.map(obj => obj.tag_name)).toEqual(['bad', 'good']);
     }
-    await Tag.removeFromNote(id,bad);
+    await Tag.removeFromNote(id, bad);
     {
         const res = await Tag.findByNote(id);
-        expect(res).toEqual(['good']);
+        expect(res.map(obj => obj.tag_name)).toEqual(['good']);
     }
     // tag relation should be deleted when note is deleted
     await Note.delete(id);
     {
         const res = await Tag.findByNote(id);
-        expect(res).toEqual([]);
+        expect(res.map(obj => obj.tag_name)).toEqual([]);
     }
 });
 
@@ -102,6 +102,26 @@ test('no unique tag in note', async () => {
     const good = await Tag.add('good', 'so good');
 
     await Tag.addToNote(id, good);
-      
+
     await expect(Tag.addToNote(id, good)).rejects.toThrow();
+});
+
+test('tag search', async () => {
+    const d = {
+        'bad 00xyp': 'b',
+        'xyb': 'fff',
+        'xya': 'fff',
+        'a4': 'uuxyuu',
+        'a5': null,
+        'b': 'iixy',
+        'real xyi': null
+    };
+
+    for (const k in d) {
+        await Tag.add(k, d[k]);
+    }
+
+    const res = await Tag.textSearch('xy');
+    const target = ['xya', 'xyb', 'bad 00xyp', 'real xyi', 'a4', 'b'];
+    expect(res.map(obj => obj.tag_name)).toEqual(target);
 });
