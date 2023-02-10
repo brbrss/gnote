@@ -24,7 +24,11 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-
+    const sql = `delete FROM projnote.note;
+    delete FROM projnote.tag;
+    delete FROM projnote.note_tag;
+    ;`;
+    await db.client.query(sql);
 });
 
 afterEach(async () => {
@@ -70,6 +74,21 @@ test('delete', async () => {
     expect(res).toBe(1);
     expect(await Tag.delete(999)).toBe(0);
 });
+
+test('find by name', async () => {
+    const name = 'Moo';
+    const desc = 'Some moo';
+    await Tag.add('bla','');
+    const id = await Tag.add(name, desc);
+    await Tag.add('wmm','');
+
+    const res = await Tag.findByName(name);
+    expect(res.id).toBe(id);
+    expect(res.name).toBe(name);
+    expect(res.description).toBe(desc);
+
+});
+
 
 test('tag note', async () => {
     const id = await Note.add('note text', null, null);

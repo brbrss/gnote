@@ -9,6 +9,7 @@ const fplist = {
     update: './sql/tag/update.sql',
     delete: './sql/tag/delete.sql',
     find: './sql/tag/find.sql',
+    findByName: './sql/tag/findByName.sql',
     findByNote: './sql/tag/findByNote.sql',
     addToNote: './sql/tag/addToNote.sql',
     removeFromNote: './sql/tag/removeFromNote.sql',
@@ -19,6 +20,13 @@ Tag.init = async function () {
     await loadSql(Tag, fplist);
 }
 
+/**
+ * 
+ * @param {String} name 
+ * @param {String} description 
+ * @param {} parent_id 
+ * @returns id of inserted tag
+ */
 Tag.add = async function (name, description, parent_id) {
     description = description ? description : null;
     parent_id = parent_id ? parent_id : null;
@@ -28,6 +36,12 @@ Tag.add = async function (name, description, parent_id) {
 
 Tag.find = async function (id) {
     const res = await this.client.query(this.sql['find'], [id]);
+    const entry = res.rows[0];
+    return { id: entry.my_id, name: entry.tag_name, description: entry.tag_description };
+}
+
+Tag.findByName = async function (name) {
+    const res = await this.client.query(this.sql['findByName'], [name]);
     const entry = res.rows[0];
     return { id: entry.my_id, name: entry.tag_name, description: entry.tag_description };
 }

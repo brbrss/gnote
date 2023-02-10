@@ -11,6 +11,9 @@ CREATE TABLE IF NOT EXISTS projnote.tag
         ON DELETE CASCADE
 );
 
+
+
+
 CREATE TABLE IF NOT EXISTS projnote.note_tag
 (
     my_id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
@@ -27,7 +30,10 @@ CREATE TABLE IF NOT EXISTS projnote.note_tag
     CONSTRAINT unique_pair UNIQUE (note_id, tag_id)
 );
 
-CREATE VIEW projnote.tag_ancestor
+
+
+
+CREATE OR REPLACE VIEW projnote.tag_ancestor
  AS
 WITH RECURSIVE mmt(tid,pid) AS (
     SELECT my_id AS tid, parent_tag AS pid FROM projnote.tag
@@ -40,3 +46,21 @@ WITH RECURSIVE mmt(tid,pid) AS (
 )
 SELECT tid AS tag_id, pid AS ancestor_id FROM mmt
 ORDER BY tid, pid;
+
+
+
+
+CREATE OR REPLACE VIEW projnote.note_expand_tag
+ AS
+(SELECT projnote.note_tag.note_id AS note_id,
+    projnote.tag_ancestor.ancestor_id AS tag_id
+FROM projnote.note_tag 
+INNER JOIN projnote.tag_ancestor
+ON projnote.note_tag.tag_id=projnote.tag_ancestor.tag_id
+)
+UNION 
+(SELECT projnote.note_tag.note_id AS note_id,
+    projnote.note_tag.tag_id AS tag_id
+FROM projnote.note_tag 
+)
+;
