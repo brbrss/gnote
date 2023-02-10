@@ -23,6 +23,7 @@ beforeAll(async () => {
     Search.client = db.client;
     await Note.init();
     await Tag.init();
+    await Search.init();
 });
 
 afterAll(async () => {
@@ -81,4 +82,13 @@ test('search tag', async () => {
     expect(res[0].mycontent).toBe('note1');
     expect(res[1].mycontent).toBe('note3');
     expect(res[2].mycontent).toBe('pptr');
+});
+
+test('search text', async () => {
+    const param = { text: 'tr' };
+    const res = await Search.search(param);
+    
+    expect(res).toHaveLength(2);
+    expect(res[0].mycontent).toBe('xtry');
+    expect(res[1].mycontent).toBe('pptr');
 });
