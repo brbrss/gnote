@@ -15,7 +15,10 @@ Search.init = async function () {
 Search.search = async function (param) {
     const arr = [
         param.text ? param.text : null, // $1
-        param.tag // $2
+        param.tag, // $2
+        param?.wdist?.x, // $3
+        param?.wdist?.y, // $4
+        param?.wdist?.dist // $5
     ];
     const res = await this.client.query(this.sql['search'], arr);
     return res.rows;

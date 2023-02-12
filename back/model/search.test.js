@@ -2,6 +2,7 @@ const { expect, test } = require('@jest/globals');
 const db = require('./db');
 const Tag = require('./tag');
 const Note = require('./note');
+const Point = require('./point');
 const Search = require('./search');
 
 require('dotenv').config();
@@ -21,8 +22,10 @@ beforeAll(async () => {
     Tag.client = db.client;
     Note.client = db.client;
     Search.client = db.client;
+    Point.client = db.client;
     await Note.init();
     await Tag.init();
+    await Point.init();
     await Search.init();
 });
 
@@ -87,8 +90,32 @@ test('search tag', async () => {
 test('search text', async () => {
     const param = { text: 'tr' };
     const res = await Search.search(param);
-    
+
     expect(res).toHaveLength(2);
     expect(res[0].mycontent).toBe('xtry');
     expect(res[1].mycontent).toBe('pptr');
+});
+
+
+test('search within distance', async () => {
+    const data =
+        [-79.38406800127191, 43.6422200106563,
+        -79.3712669943727, 43.6494610001075,
+        -79.3825739992347, 43.6451529957272];
+    let pid = [];
+    for (let i = 0; i < data.length / 2; i++) {
+        let id = await Point.add('p' + String(i), data[i * 2], data[i * 2 + 1], '')
+        pid.push(id);
+    }
+    await Note.add('n1', pid[1], null);
+    await Note.add('n2', pid[2], null);
+    await Note.add('n3', pid[2], null);
+    await Note.add('n4', pid[0], null);
+    await Note.add('n5', null, null);
+    const param = { wdist: { x: -79.38, y: 43.64, dist: 1200 } };
+    const res = await Search.search(param);
+    expect(res).toHaveLength(3);
+    expect(res[0].mycontent).toBe('n2');
+    expect(res[1].mycontent).toBe('n3');
+    expect(res[2].mycontent).toBe('n4');
 });
