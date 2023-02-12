@@ -14,11 +14,11 @@ require('dotenv').config();
 beforeAll(async () => {
     db.config.database = process.env.DB_TESTDB;
     await db.connect();
-    await db.execfile('./sql/init.sql');
-    await db.execfile('./sql/geo_entity.sql');
-    await db.execfile('./sql/geo_point.sql');
-    await db.execfile('./sql/note.sql');
-    await db.execfile('./sql/tag.sql');
+    await db.execfile('./sql/init/init.sql');
+    await db.execfile('./sql/init/geo_entity.sql');
+    await db.execfile('./sql/init/geo_point.sql');
+    await db.execfile('./sql/init/note.sql');
+    await db.execfile('./sql/init/tag.sql');
     Tag.client = db.client;
     Note.client = db.client;
     Search.client = db.client;

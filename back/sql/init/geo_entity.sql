@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS projnote.geo_entity
 );
 
 COMMENT ON COLUMN projnote.geo_entity.mytype
-    IS 'values: 0-city; 1-state/province; 2-country';
+    IS 'values: 0-point; 1-line; 2-polygon';

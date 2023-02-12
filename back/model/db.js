@@ -29,11 +29,11 @@ db.execfile = async function (fpath) {
 
 db.create = async function () {
     const fplist = [
-        './sql/init.sql',
-        './sql/geo_entity.sql',
-        './sql/geo_point.sql',
-        './sql/note.sql',
-        './sql/tag.sql'
+        './sql/init/init.sql',
+        './sql/init/geo_entity.sql',
+        './sql/init/geo_point.sql',
+        './sql/init/note.sql',
+        './sql/init/tag.sql'
     ];
     for (const fp of fplist) {
         await db.execfile(fp);

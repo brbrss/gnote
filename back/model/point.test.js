@@ -7,9 +7,9 @@ beforeAll(async () => {
     db.config.database = process.env.DB_TESTDB;
     await db.connect();
     await db.drop();
-    await db.execfile('./sql/init.sql');
-    await db.execfile('./sql/geo_entity.sql');
-    await db.execfile('./sql/geo_point.sql');
+    await db.execfile('./sql/init/init.sql');
+    await db.execfile('./sql/init/geo_entity.sql');
+    await db.execfile('./sql/init/geo_point.sql');
     Point.client = db.client;
     await Point.init();
 });
