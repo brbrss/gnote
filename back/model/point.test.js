@@ -1,5 +1,6 @@
 const { expect, test } = require('@jest/globals');
 const db = require('./db');
+const { NotFoundError } = require('./modelError');
 const Point = require('./point');
 require('dotenv').config();
 
@@ -54,7 +55,7 @@ test('find point', async () => {
 });
 
 test('find not found', async () => {
-    let res = await Point.find(9999);
+     await expect(Point.find(9999)).rejects.toThrow(NotFoundError);
 });
 
 

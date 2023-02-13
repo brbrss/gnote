@@ -1,6 +1,6 @@
 const loadSql = require('./loadSql');
 const toNumber = require('../util/convert');
-
+const { NotFoundError, DbConnectionError } = require('./modelError');
 
 const Point = {};
 
@@ -22,8 +22,18 @@ Point.add = async function (name, lon, lat, comment) {
 }
 
 Point.find = async function (id) {
-    const res = await Point.client.query(Point.sql['find'], [id]);
-    return res.rows[0];
+    let res;
+    try {
+        res = await Point.client.query(Point.sql['find'], [id]);
+    } catch (err) {
+        throw new DbConnectionError();
+    }
+    const point = res.rows[0];
+    if (point) {
+        return point;
+    } else {
+        throw new NotFoundError('Point ID');
+    }
 }
 
 Point.all = async function (offset, limit) {
