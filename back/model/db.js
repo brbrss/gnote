@@ -2,7 +2,7 @@ require('dotenv').config();
 const fs = require('fs/promises');
 const { Client } = require('pg');
 
-const db = { client: null };
+const db = {};
 
 db.config = {
     user: process.env.DB_USER,

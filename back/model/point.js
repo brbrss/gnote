@@ -15,10 +15,10 @@ Point.init = async function () {
 }
 
 
-Point.add = async function (name, lon, lat, comment) {
-    comment = comment ? comment : null;
-    const res = await Point.client.query(Point.sql['add'], [name, lon, lat, comment]);
-    return res.rows[0]['entity_id'];
+Point.add = async function (name, lon, lat, desc) {
+    desc = desc ? desc : null;
+    const res = await Point.client.query(Point.sql['add'], [name, lon, lat, desc]);
+    return Number(res.rows[0]['entity_id']);
 }
 
 Point.find = async function (id) {
