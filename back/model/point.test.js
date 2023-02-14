@@ -46,12 +46,12 @@ test('find point', async () => {
     const id1 = await Point.add('hehe', 14, -56, null);
     const id2 = await Point.add('Some', 14, -56, 'bababa');
     let res = await Point.find(id2);
-    expect(res.myid).toBe(id2);
-    expect(res.myname).toBe('Some');
-    expect(res.textcontent).toBe('bababa');
+    expect(res.id).toBe(id2);
+    expect(res.name).toBe('Some');
+    expect(res.desc).toBe('bababa');
     res = await Point.find(id1);
-    expect(res.textcontent).toBe(null);
-    expect(res.myid).toBe(id1);
+    expect(res.desc).toBe(null);
+    expect(res.id).toBe(id1);
 });
 
 test('find not found', async () => {
@@ -67,9 +67,9 @@ test('find all', async () => {
 
     const res = await Point.all();
     expect(res.length).toBe(3);
-    expect(res[0].myname).toBe('Some1');
-    expect(res[1].myname).toBe('Some2');
-    expect(res[2].myname).toBe('Some3');
+    expect(res[0].name).toBe('Some1');
+    expect(res[1].name).toBe('Some2');
+    expect(res[2].name).toBe('Some3');
 
 });
 
@@ -83,20 +83,20 @@ test('find all paginage default', async () => {
     {
         const res = await Point.all(0);
         expect(res.length).toBe(10);
-        expect(res[0].myname).toBe('pt0');
-        expect(res[9].myname).toBe('pt9');
+        expect(res[0].name).toBe('pt0');
+        expect(res[9].name).toBe('pt9');
     }
     {
         const res = await Point.all(10);
         expect(res.length).toBe(10);
-        expect(res[0].myname).toBe('pt10');
-        expect(res[9].myname).toBe('pt19');
+        expect(res[0].name).toBe('pt10');
+        expect(res[9].name).toBe('pt19');
     }
     {
         const res = await Point.all(90);
         expect(res.length).toBe(10);
-        expect(res[0].myname).toBe('pt90');
-        expect(res[9].myname).toBe('pt99');
+        expect(res[0].name).toBe('pt90');
+        expect(res[9].name).toBe('pt99');
     }
 
 });
@@ -111,13 +111,13 @@ test('find all paginage', async () => {
     {
         const res = await Point.all(33, 4);
         expect(res.length).toBe(4);
-        expect(res[0].myname).toBe('pt33');
-        expect(res[3].myname).toBe('pt36');
+        expect(res[0].name).toBe('pt33');
+        expect(res[3].name).toBe('pt36');
     }
     {
         const res = await Point.all(37, 4);
         expect(res.length).toBe(4);
-        expect(res[0].myname).toBe('pt37');
-        expect(res[3].myname).toBe('pt40');
+        expect(res[0].name).toBe('pt37');
+        expect(res[3].name).toBe('pt40');
     }
 });

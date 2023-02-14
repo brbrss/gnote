@@ -30,7 +30,7 @@ Point.find = async function (id) {
     }
     const point = res.rows[0];
     if (point) {
-        return point;
+        return Point.fromRow(point);
     } else {
         throw new NotFoundError('Point ID');
     }
@@ -41,7 +41,16 @@ Point.all = async function (offset, limit) {
     limit = toNumber(limit, 10);
 
     const res = await Point.client.query(Point.sql['all'], [offset, limit]);
-    return res.rows;
+    return res.rows.map(r => Point.fromRow(r));
+}
+
+Point.fromRow = function (row) {
+    return {
+        id: row.myid,
+        name: row.myname,
+        desc: row.textcontent,
+        shape: row.shape
+    };
 }
 
 module.exports = Point;

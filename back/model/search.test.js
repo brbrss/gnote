@@ -82,9 +82,9 @@ test('search tag', async () => {
     const param = { tag: tid };
     const res = await Search.search(param);
     expect(res).toHaveLength(3);
-    expect(res[0].mycontent).toBe('note1');
-    expect(res[1].mycontent).toBe('note3');
-    expect(res[2].mycontent).toBe('pptr');
+    expect(res[0].content).toBe('note1');
+    expect(res[1].content).toBe('note3');
+    expect(res[2].content).toBe('pptr');
 });
 
 test('search text', async () => {
@@ -92,8 +92,8 @@ test('search text', async () => {
     const res = await Search.search(param);
 
     expect(res).toHaveLength(2);
-    expect(res[0].mycontent).toBe('xtry');
-    expect(res[1].mycontent).toBe('pptr');
+    expect(res[0].content).toBe('xtry');
+    expect(res[1].content).toBe('pptr');
 });
 
 
@@ -115,7 +115,7 @@ test('search within distance', async () => {
     const param = { wdist: { x: -79.38, y: 43.64, dist: 1200 } };
     const res = await Search.search(param);
     expect(res).toHaveLength(3);
-    expect(res[0].mycontent).toBe('n2');
-    expect(res[1].mycontent).toBe('n3');
-    expect(res[2].mycontent).toBe('n4');
+    expect(res[0].content).toBe('n2');
+    expect(res[1].content).toBe('n3');
+    expect(res[2].content).toBe('n4');
 });

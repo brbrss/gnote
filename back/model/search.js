@@ -1,4 +1,5 @@
 const loadSql = require('./loadSql');
+const Note = require('./note');
 
 
 const Search = {};
@@ -21,7 +22,7 @@ Search.search = async function (param) {
         param?.wdist?.dist // $5
     ];
     const res = await this.client.query(this.sql['search'], arr);
-    return res.rows;
+    return res.rows.map(r => Note.fromRow(r));
 }
 
 module.exports = Search;

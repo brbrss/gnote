@@ -43,7 +43,17 @@ Note.delete = async function (id) {
 Note.find = async function (fid) {
     const sql = Note.sql['find'];
     const res = await Note.client.query(sql, [id]);
-    return res.rowCount;
+    return this.fromRow(res.rows[0]);
+}
+
+Note.fromRow = function (row) {
+    return {
+        id: row.myid,
+        geo_id: row.geo_id,
+        time_event: row.time_event,
+        content: row.mycontent,
+        time_added: row.time_added
+    };
 }
 
 module.exports = Note;
