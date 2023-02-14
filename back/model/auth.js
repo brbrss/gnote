@@ -7,8 +7,6 @@ let crypto = require('crypto');
 const FP_LIST = {
     'insert': './sql/auth/insert.sql',
     'findByName': './sql/auth/findByUsername.sql',
-    'createSession': './sql/auth/createSession.sql',
-    'getSession': './sql/auth/getSession.sql',
 };
 
 const Auth = {};
@@ -82,38 +80,6 @@ Auth.verify = async function (username, password) {
     } else {
         throw new AuthenticationError('Password does not match');
     }
-}
-
-/**
- * 
- * @param {*} uid user id
- * @param {*} duration in seconds
- * @returns 
- */
-Auth.createSession = async function (uid, duration) {
-    //const duration = 1 * 60 * 60; // in seconds
-    const token = crypto.randomBytes(32).toString('hex');
-    try {
-        const res = await this.client.query(this.sql['createSession'], [uid, duration, token]);
-        return res.rows[0].session_token;
-    } catch (err) {
-        throw new DbConnectionError(err.message, { cause: err });
-    }
-}
-
-Auth.verifySession = async function (uid, token) {
-    let res;
-    try {
-        res = await this.client.query(this.sql['getSession'], [uid]);
-    } catch (err) {
-        throw new DbConnectionError(err.message, { cause: err });
-    }
-    if (res.rows.length !== 1) {
-        throw new AuthenticationError('uid not found');
-    }
-    const valid_until = res.rows[0].session_valid_until;
-    const target = res.rows[0].session_token;
-    return (new Date() < valid_until) && (token === target);
 }
 
 module.exports = Auth;

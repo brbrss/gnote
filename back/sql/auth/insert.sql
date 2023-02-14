@@ -1,6 +1,6 @@
 INSERT INTO projnote.auth
-(username, salt, hashed_pw,session_valid_until)
+(username, salt, hashed_pw)
 VALUES
-($1, $2, $3, NOW())
+($1, $2, $3)
 RETURNING user_id
 ;

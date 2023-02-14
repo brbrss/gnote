@@ -33,7 +33,8 @@ db.create = async function () {
         './sql/init/geo_entity.sql',
         './sql/init/geo_point.sql',
         './sql/init/note.sql',
-        './sql/init/tag.sql'
+        './sql/init/tag.sql',
+        './sql/init/auth.sql'
     ];
     for (const fp of fplist) {
         await db.execfile(fp);
