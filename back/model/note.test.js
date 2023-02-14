@@ -34,6 +34,17 @@ test('init', async () => {
     expect(Note.sql['foo']).toBeUndefined();
 });
 
+test('find', async () => {
+    await Note.add('aa', null, null);
+    await Note.add('aa', null, null);
+    const id = await Note.add('bb', null, new Date(1923, 4, 5));
+    await Note.add('aa', null, null);
+    await Note.add('aa', null, null);
+    const res = await Note.find(id);
+    expect(res.content).toBe('bb');
+    expect(new Date(res.time_event)).toEqual(new Date(1923, 4, 5));
+});
+
 test('update', async () => {
     const id = await Note.add('bb', null, null);
     const res = await Note.update(id, 'bb', null, new Date(1900, 3, 5));

@@ -20,10 +20,10 @@ router.get('/:id', async function (req, res, next) {
  */
 router.put('/', async function (req, res, next) {
     try {
-        const text = req.body.text;
+        const content = req.body.content;
         const geo = req.body.geo;
         const time = req.body.time;
-        const id = await Note.add(text, geo, time);
+        const id = await Note.add(content, geo, time);
         res.status(201).json({ id });
     } catch (err) {
         next(err);

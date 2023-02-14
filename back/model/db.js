@@ -14,7 +14,7 @@ db.config = {
 
 db.connect = async function () {
     db.client = new Client(db.config);
-    db.client.connect();
+    await db.client.connect();
     return db.client;
 }
 

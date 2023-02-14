@@ -42,7 +42,7 @@ Note.delete = async function (id) {
 
 Note.find = async function (fid) {
     const sql = Note.sql['find'];
-    const res = await Note.client.query(sql, [id]);
+    const res = await Note.client.query(sql, [fid]);
     return this.fromRow(res.rows[0]);
 }
 

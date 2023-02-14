@@ -6,7 +6,8 @@ const db = require('./db');
 
 
 
-function inject() {
+async function inject() {
+    await db.connect();
     Note.client = db.client;
     Point.client = db.client;
     Tag.client = db.client;
@@ -14,10 +15,11 @@ function inject() {
 }
 
 async function init() {
+    await inject();
     await Note.init();
     await Point.init();
     await Tag.init();
     await Search.init();
 }
 
-module.exports = { inject, init };
+module.exports = { init };

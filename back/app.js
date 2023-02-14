@@ -21,19 +21,26 @@ app.use(express.static(path.join(__dirname, 'public')));
     store: new (require('connect-pg-simple')(session))({
       createTableIfMissing: true
     }),
-    secret: process.env.FOO_COOKIE_SECRET,
+    secret: process.env.COOKIE_SECRET,
     resave: false,
     cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
   }));
 }
 
 {
+  const Model = require('./model/model');
+  Model.init();
+}
+
+{
   const indexRouter = require('./routes/index');
   const usersRouter = require('./routes/users');
   const pointRouter = require('./routes/point');
+  const noteRouter = require('./routes/note');
   app.use('/', indexRouter);
   app.use('/users', usersRouter);
   app.use('/point', pointRouter);
+  app.use('/note', noteRouter);
 }
 
 // catch 404 and forward to error handler
