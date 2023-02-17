@@ -35,10 +35,10 @@ router.put('/', async function (req, res, next) {
  * 
  * rowCount number of records affected
  */
-router.post('/', async function (req, res, next) {
+router.post('/:id', async function (req, res, next) {
     try {
-        const id = req.body.id;
-        const text = req.body.text;
+        const id = req.params.id;
+        const text = req.body.content;
         const geo = req.body.geo;
         const time = req.body.time;
         const rowCount = await Note.update(id, text, geo, time);
@@ -54,9 +54,9 @@ router.post('/', async function (req, res, next) {
  * 
  * rowCount number of records deleted
  */
-router.delete('/', async function (req, res, next) {
+router.delete('/:id', async function (req, res, next) {
     try {
-        const id = req.body.id;
+        const id = req.params.id;
         const rowCount = await Note.delete(id);
         res.status(200).json({ rowCount });
     } catch (err) {

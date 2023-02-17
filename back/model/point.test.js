@@ -49,13 +49,14 @@ test('find point', async () => {
     expect(res.id).toBe(id2);
     expect(res.name).toBe('Some');
     expect(res.desc).toBe('bababa');
+    expect(JSON.parse(res.shape)).toEqual({ type: 'Point', coordinates: [14, -56] });
     res = await Point.find(id1);
     expect(res.desc).toBe(null);
     expect(res.id).toBe(id1);
 });
 
 test('find not found', async () => {
-     await expect(Point.find(9999)).rejects.toThrow(NotFoundError);
+    await expect(Point.find(9999)).rejects.toThrow(NotFoundError);
 });
 
 
@@ -63,13 +64,14 @@ test('find all', async () => {
 
     await Point.add('Some1', 14, -56, 'bababa1');
     await Point.add('Some2', 14, -56, 'bababa2');
-    await Point.add('Some3', 14, -56, 'bababa3');
+    await Point.add('Some3', -55.5, 12.3, 'bababa3');
 
     const res = await Point.all();
     expect(res.length).toBe(3);
     expect(res[0].name).toBe('Some1');
     expect(res[1].name).toBe('Some2');
     expect(res[2].name).toBe('Some3');
+    expect(JSON.parse(res[2].shape)).toEqual({ type: 'Point', coordinates: [-55.5, 12.3] });
 
 });
 
