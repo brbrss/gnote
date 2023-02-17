@@ -22,11 +22,12 @@ async function init() {
     await Search.init();
 }
 
-async function createSchema() {
+async function resetSchema() {
     await db.connect();
+    await db.drop();
     await db.create();
     await db.disconnect();
     console.log('Schema created');
 }
 
-module.exports = { init, createSchema };
+module.exports = { init, resetSchema };
