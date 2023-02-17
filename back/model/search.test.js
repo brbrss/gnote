@@ -77,6 +77,13 @@ test('setup', async () => {
 
 });
 
+test('search unrestricted', async () => {
+    const param = {tag:null };
+    const res = await Search.search(param);
+    expect(res).toHaveLength(5);
+});
+
+
 test('search tag', async () => {
     const tid = (await Tag.findByName('c')).id;
     const param = { tag: tid };

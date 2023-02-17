@@ -1,6 +1,6 @@
 const loadSql = require('./loadSql');
 const Note = require('./note');
-
+const { DbConnectionError } = require('./modelError');
 
 const Search = {};
 
@@ -21,8 +21,12 @@ Search.search = async function (param) {
         param?.wdist?.y, // $4
         param?.wdist?.dist // $5
     ];
-    const res = await this.client.query(this.sql['search'], arr);
-    return res.rows.map(r => Note.fromRow(r));
+    try {
+        const res = await this.client.query(this.sql['search'], arr);
+        return res.rows.map(r => Note.fromRow(r));
+    } catch (err) {
+        throw new DbConnectionError('Database error', { cause: err });
+    }
 }
 
 module.exports = Search;

@@ -39,10 +39,12 @@ app.use(express.static(path.join(__dirname, 'public')));
   const usersRouter = require('./routes/users');
   const pointRouter = require('./routes/point');
   const noteRouter = require('./routes/note');
+  const searchRouter = require('./routes/search');
   app.use('/', indexRouter);
   app.use('/users', usersRouter);
   app.use('/point', pointRouter);
   app.use('/note', noteRouter);
+  app.use('/search', searchRouter);
 }
 
 // catch 404 and forward to error handler

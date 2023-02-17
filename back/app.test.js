@@ -106,3 +106,30 @@ it('note/ delete', async () => {
     }
 
 });
+
+it('search/ ', async () => {
+    let id;
+    {
+        await request(app)
+            .post('/note')
+            .type('form')
+            .send({ content: "bbgg", geo: null, time: null });
+
+        const res = await request(app)
+            .post('/note')
+            .type('form')
+            .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3) });
+        expect(Number(res.body.id)).toBeGreaterThan(0);
+        id = Number(res.body.id);
+    }
+    {
+        const res = await request(app)
+            .post('/search')
+            .type('form')
+            .send('');
+        expect(res.body).toHaveLength(2);
+        expect(res.body[1].content).toBe('rfvedc');
+    }
+
+
+});
