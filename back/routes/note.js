@@ -18,7 +18,7 @@ router.get('/:id', async function (req, res, next) {
  * 
  * id id of created record
  */
-router.put('/', async function (req, res, next) {
+router.post('/', async function (req, res, next) {
     try {
         const content = req.body.content;
         const geo = req.body.geo;
@@ -33,9 +33,10 @@ router.put('/', async function (req, res, next) {
 /**
  * response
  * 
- * rowCount number of records affected
+ * rowCount number of records affected,
+ * should be 1 or 0
  */
-router.post('/:id', async function (req, res, next) {
+router.put('/:id', async function (req, res, next) {
     try {
         const id = req.params.id;
         const text = req.body.content;

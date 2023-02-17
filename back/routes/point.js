@@ -12,7 +12,7 @@ router.get('/:id', async function (req, res, next) {
     }
 });
 
-router.put('/', async function (req, res, next) {
+router.post('/', async function (req, res, next) {
     try {
         let name = req.body.name;
         let lon = req.body.lon;

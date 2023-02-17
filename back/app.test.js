@@ -26,7 +26,7 @@ afterEach(async () => {
 
 it('point/ put get', async () => {
     const res = await request(app)
-        .put('/point')
+        .post('/point')
         .type('form')
         .send({ name: "hahaha", lon: 12, lat: 55, comment: 'llww' });
 
@@ -40,10 +40,10 @@ it('point/ put get', async () => {
 
 
 
-it('note/ put get', async () => {
+it('note/ create get', async () => {
 
     const res = await request(app)
-        .put('/note')
+        .post('/note')
         .type('form')
         .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3) });
 
@@ -55,11 +55,11 @@ it('note/ put get', async () => {
     expect(res2.body.content).toBe("rfvedc");
 });
 
-it('note/ post', async () => {
+it('note/ update', async () => {
     let id;
     {
         const res = await request(app)
-            .put('/note')
+            .post('/note')
             .type('form')
             .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3) });
         expect(Number(res.body.id)).toBeGreaterThan(0);
@@ -67,7 +67,7 @@ it('note/ post', async () => {
     }
     {
         const res = await request(app)
-            .post('/note/' + id)
+            .put('/note/' + id)
             .type('form')
             .send({ content: "asdf", geo: null, time: new Date(1953, 12, 3) });
         expect(res.body).toEqual({ rowCount: 1 });
@@ -83,7 +83,7 @@ it('note/ delete', async () => {
     let id;
     {
         const res = await request(app)
-            .put('/note')
+            .post('/note')
             .type('form')
             .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3) });
         expect(Number(res.body.id)).toBeGreaterThan(0);
