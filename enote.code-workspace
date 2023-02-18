@@ -1,8 +1,8 @@
 {
 	"folders": [
-		// {
-		// 	"path": "."
-		// },
+		 {
+		 	"path": "."
+		 },
 		{
 			"name": "front",
 			"path": "front"
@@ -14,7 +14,7 @@
 	],
 	"settings": {
 		"jest.disabledWorkspaceFolders": [
-			"front"
+			"enote"
 		]
 	}
 }
