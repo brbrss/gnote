@@ -1,3 +1,3 @@
 const Model = require('./model');
 
-Model.createSchema();
+Model.resetSchema();

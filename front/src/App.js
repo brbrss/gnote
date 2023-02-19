@@ -1,8 +1,12 @@
 import React from 'react';
-
+import { AddNote } from './com/AddNote';
 
 function App() {
-    return (<div>hello<input type="password"/></div>);
+    return (
+        <div>hello
+            <AddNote></AddNote>
+        </div>
+    );
 }
 
 

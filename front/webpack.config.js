@@ -29,6 +29,12 @@ module.exports = {
             directory: path.join(__dirname, "public/")
         },
         port: 3001,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:3000',
+                secure: false
+            }
+        },
         devMiddleware: {
             publicPath: "https://localhost:3001/dist/",
         },
