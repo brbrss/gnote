@@ -26,14 +26,14 @@ afterEach(async () => {
 
 it('point/ put get', async () => {
     const res = await request(app)
-        .post('/point')
+        .post('/api/point')
         .type('form')
         .send({ name: "hahaha", lon: 12, lat: 55, comment: 'llww' });
 
     expect(res.body.id).not.toBeNull();
 
     const res2 = await request(app)
-        .get('/point/' + res.body.id);
+        .get('/api/point/' + res.body.id);
     expect(res2.body.name).toBe("hahaha");
     expect(res2.body.desc).toBe("llww");
 });
@@ -43,14 +43,14 @@ it('point/ put get', async () => {
 it('note/ create get', async () => {
 
     const res = await request(app)
-        .post('/note')
+        .post('/api/note')
         .type('form')
         .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3) });
 
     expect(Number(res.body.id)).toBeGreaterThan(0);
 
     const res2 = await request(app)
-        .get('/note/' + res.body.id);
+        .get('/api/note/' + res.body.id);
     expect(res2.status).toBe(200);
     expect(res2.body.content).toBe("rfvedc");
 });
@@ -59,7 +59,7 @@ it('note/ update', async () => {
     let id;
     {
         const res = await request(app)
-            .post('/note')
+            .post('/api/note')
             .type('form')
             .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3) });
         expect(Number(res.body.id)).toBeGreaterThan(0);
@@ -67,14 +67,14 @@ it('note/ update', async () => {
     }
     {
         const res = await request(app)
-            .put('/note/' + id)
+            .put('/api/note/' + id)
             .type('form')
             .send({ content: "asdf", geo: null, time: new Date(1953, 12, 3) });
         expect(res.body).toEqual({ rowCount: 1 });
     }
     {
         const res = await request(app)
-            .get('/note/' + id);
+            .get('/api/note/' + id);
         expect(res.body.content).toBe("asdf");
     }
 });
@@ -83,7 +83,7 @@ it('note/ delete', async () => {
     let id;
     {
         const res = await request(app)
-            .post('/note')
+            .post('/api/note')
             .type('form')
             .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3) });
         expect(Number(res.body.id)).toBeGreaterThan(0);
@@ -91,17 +91,17 @@ it('note/ delete', async () => {
     }
     {
         const res = await request(app)
-            .delete('/note/' + String(5555));
+            .delete('/api/note/' + String(5555));
         expect(res.body).toEqual({ rowCount: 0 });
     }
     {
         const res = await request(app)
-            .delete('/note/' + id);
+            .delete('/api/note/' + id);
         expect(res.body).toEqual({ rowCount: 1 });
     }
     {
         const res = await request(app)
-            .delete('/note/' + id);
+            .delete('/api/note/' + id);
         expect(res.body).toEqual({ rowCount: 0 });
     }
 
@@ -111,12 +111,12 @@ it('search/ ', async () => {
     let id;
     {
         await request(app)
-            .post('/note')
+            .post('/api/note')
             .type('form')
             .send({ content: "bbgg", geo: null, time: null });
 
         const res = await request(app)
-            .post('/note')
+            .post('/api/note')
             .type('form')
             .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3) });
         expect(Number(res.body.id)).toBeGreaterThan(0);
@@ -124,7 +124,7 @@ it('search/ ', async () => {
     }
     {
         const res = await request(app)
-            .post('/search')
+            .post('/api/search')
             .type('form')
             .send('');
         expect(res.body).toHaveLength(2);

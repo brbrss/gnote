@@ -1,10 +1,10 @@
 import React from 'react';
-import { AddNote } from './com/AddNote';
+import { FrontPage } from './com/FrontPage';
 
 function App() {
     return (
         <div>hello
-            <AddNote></AddNote>
+            <FrontPage></FrontPage>
         </div>
     );
 }

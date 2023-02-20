@@ -13,8 +13,10 @@ function NoteCard(props) {
     const content = props.content;
     const tagList = props.tagList;
     const geoId = props.geoId;
+    const id = props.id;
     return (
         <div>
+            <span>No. {id}</span>
             {time ? <span>Time added: <time>{String(time)}</time></span> : null}
             <div>{content}</div>
             <TagRow tagList={tagList}></TagRow>
