@@ -38,6 +38,12 @@ it('point/ put get', async () => {
     expect(res2.body.desc).toBe("llww");
 });
 
+it('point/ get error', async () => {
+    const res2 = await request(app)
+        .get('/api/point/' + 789);
+    expect(res2.status).toBe(404);
+    expect(res2.body).toEqual({});
+});
 
 
 it('note/ create get', async () => {
@@ -77,6 +83,14 @@ it('note/ update', async () => {
             .get('/api/note/' + id);
         expect(res.body.content).toBe("asdf");
     }
+});
+
+it('note/ update error', async () => {
+    const res = await request(app)
+        .put('/api/note/' + 4567)
+        .type('form')
+        .send({ content: "asdf", geo: null, time: new Date(1953, 12, 3) })
+    expect(res.status).toBe(400);
 });
 
 it('note/ delete', async () => {
