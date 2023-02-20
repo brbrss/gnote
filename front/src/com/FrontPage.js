@@ -3,7 +3,10 @@ import { SearchPanel } from "./SearchPanel";
 
 function FrontPage() {
     return (
-        <SearchPanel />
+        <div>
+            Front Page
+            <SearchPanel />
+        </div>
     );
 }
 
