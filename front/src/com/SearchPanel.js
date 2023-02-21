@@ -17,7 +17,7 @@ function SearchBar(props) {
         <form action="/api/search/" method="POST" onSubmit={mySubmit}>
             <label>
                 Text
-                <input type="text" name="content" onChange={handleInput} />
+                <input type="text" name="text" onChange={handleInput} />
             </label>
             <button type="submit" >Submit</button>
         </form>
@@ -29,9 +29,10 @@ function NoteList(props) {
     function F_(props) {
         return <NoteCard
             content={props.note.content}
-            time={props.note.time}
+            time_added={props.note.time_added}
+            time_event={props.note.time_event}
             tagList={props.note.tagList}
-            geoId={props.note.geoId}
+            geoId={props.note.geo_id}
             id={props.note.id}
         />
     }

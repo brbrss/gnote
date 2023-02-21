@@ -1,43 +1,66 @@
 import React, { useState } from 'react';
+import submit from '../util/submit';
 
-
+function addTime(dateStr, timeStr) {
+    if (!dateStr) {
+        return '';
+    }
+    if (!timeStr) {
+        return dateStr;
+    }
+    else {
+        return dateStr + 'T' + timeStr;
+    }
+}
 
 function AddNote(props) {
-    const [state, setState] = useState('');
+    const [state, setState] = useState({
+        content: '',
+        event_date: '',
+        event_time: '',
+        geo: ''
+    });
     function handleInput(e) {
         setState({ ...state, [e.target.name]: e.target.value })
     }
-    async function submit(ev) {
+    async function mySubmit(ev) {
         ev.preventDefault();
-        let formData = new FormData(ev.target);
-        let object = {};
-        formData.forEach((value, key) => object[key] = value);
+        let object = {
+            content: state.content,
+            time: addTime(state.event_date, state.event_time),
+            geo: state.geo
+        };
+        console.log(state);
         let json = JSON.stringify(object);
-        await fetch(ev.target.action, {
+        console.log(json);
+        const res = await fetch(ev.target.action, {
             method: ev.target.method,
             headers: {
                 'Content-Type': 'application/json'
             },
             body: json
         });
+        console.log(res);
     }
     return (
-        <form action="/api/note/" method="POST" onSubmit={submit}>
+        <form action="/api/note/" method="POST" onSubmit={mySubmit}>
+            Add New
             <label>
                 Content
-                <input type="text" name="content" onChange={handleInput} />
+                <input type="text" name="content" value={state.content} required onChange={handleInput} />
             </label>
             <label>
-                Datetime
-                <input type="datetime-local" name="event_date" onChange={handleInput} />
+                Date
+                <input type="date" name="event_date" value={state.event_date} onChange={handleInput} />
             </label>
-            {/* <label>
+            <label>
                 Time
-                <input type="time" name="event_time" onChange={handleInput} />
-            </label> */}
-            <label>Location
-                <button type="submit" >Submit</button>
+                <input type="time" name="event_time" step={1} value={state.event_time} onChange={handleInput} />
             </label>
+            <label>Location
+                <input type="text" name="geo" value={state.geo} onChange={handleInput} />
+            </label>
+            <button type="submit" >Submit</button>
         </form>
     );
 }
