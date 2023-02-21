@@ -3,3 +3,4 @@ back/tools/*
 back/.env
 
 front/node_modules/*
+.vscode/*

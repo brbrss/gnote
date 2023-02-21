@@ -37,13 +37,13 @@ Tag.add = async function (name, description, parent_id) {
 Tag.find = async function (id) {
     const res = await this.client.query(this.sql['find'], [id]);
     const entry = res.rows[0];
-    return { id: entry.my_id, name: entry.tag_name, description: entry.tag_description };
+    return this.fromRow(entry);
 }
 
 Tag.findByName = async function (name) {
     const res = await this.client.query(this.sql['findByName'], [name]);
     const entry = res.rows[0];
-    return { id: entry.my_id, name: entry.tag_name, description: entry.tag_description };
+    return this.fromRow(entry);
 }
 
 Tag.delete = async function (id) {
@@ -71,12 +71,16 @@ Tag.addToNote = async function (noteId, tagId) {
 Tag.findByNote = async function (noteId) {
     const res = await this.client.query(this.sql['findByNote'], [noteId]);
     //return res.rows.map(obj=>obj.tag_name);
-    return res.rows;
+    return res.rows.map(r => this.fromRow(r));
 }
 
 Tag.textSearch = async function (str, limit) {
     const res = await this.client.query(this.sql['textSearch'], [str, limit]);
-    return res.rows
+    return res.rows.map(r => this.fromRow(r));
+}
+
+Tag.fromRow = function (row) {
+    return { id: row.my_id, name: row.tag_name, description: row.tag_description };
 }
 
 module.exports = Tag;

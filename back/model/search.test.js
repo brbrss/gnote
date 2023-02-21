@@ -36,7 +36,7 @@ afterAll(async () => {
 
 
 
-const TAG_LIST = ['a', 'aa', 'aaa', 'b', 'bb', 'bba', 'bbb', 'bbba', 'bc', 'c', 'cc', 'ccc', 'd'];
+const TAG_LIST = ['x', 'xc', 'a', 'aa', 'aaa', 'b', 'bb', 'bba', 'bbb', 'bbba', 'bc', 'c', 'cc', 'ccc', 'd'];
 const NOTE_LIST = {
     'note1': ['cc', 'bbba'],
     'note2': ['a', 'bb'],
@@ -78,7 +78,7 @@ test('setup', async () => {
 });
 
 test('search unrestricted', async () => {
-    const param = {tag:null };
+    const param = { tag: null };
     const res = await Search.search(param);
     expect(res).toHaveLength(5);
 });

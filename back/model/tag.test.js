@@ -101,18 +101,18 @@ test('tag note', async () => {
     // note has tag
     {
         const res = await Tag.findByNote(id);
-        expect(res.map(obj => obj.tag_name)).toEqual(['bad', 'good']);
+        expect(res.map(obj => obj.name)).toEqual(['bad', 'good']);
     }
     await Tag.removeFromNote(id, bad);
     {
         const res = await Tag.findByNote(id);
-        expect(res.map(obj => obj.tag_name)).toEqual(['good']);
+        expect(res.map(obj => obj.name)).toEqual(['good']);
     }
     // tag relation should be deleted when note is deleted
     await Note.delete(id);
     {
         const res = await Tag.findByNote(id);
-        expect(res.map(obj => obj.tag_name)).toEqual([]);
+        expect(res.map(obj => obj.name)).toEqual([]);
     }
 });
 
@@ -143,12 +143,12 @@ test('tag search', async () => {
     {
         const res = await Tag.textSearch('xy', 10);
         const target = ['xya', 'xyb', 'bad 00xyp', 'real xyi', 'a4', 'b'];
-        expect(res.map(obj => obj.tag_name)).toEqual(target);
+        expect(res.map(obj => obj.name)).toEqual(target);
     }
     {
         const res = await Tag.textSearch('xy', 3);
         const target = ['xya', 'xyb', 'bad 00xyp'];
-        expect(res.map(obj => obj.tag_name)).toEqual(target);
+        expect(res.map(obj => obj.name)).toEqual(target);
     }
 
 });

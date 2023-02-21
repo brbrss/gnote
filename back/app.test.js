@@ -65,7 +65,7 @@ it('note/ create missing', async () => {
     const res = await request(app)
         .post('/api/note')
         .type('form')
-        .send({ content: "rfvedc", geo: null});
+        .send({ content: "rfvedc", geo: null });
 
     expect(res.status).toBe(400);
 });
@@ -74,7 +74,7 @@ it('note/ create err', async () => {
     const res = await request(app)
         .post('/api/note')
         .type('form')
-        .send({ content: "rfvedc", geo: 'ggg'});
+        .send({ content: "rfvedc", geo: 'ggg' });
 
     expect(res.status).toBe(400);
 });
@@ -172,4 +172,25 @@ it('search/ ', async () => {
     }
 
 
+});
+
+it('tag/ add', async () => {
+    const res = await request(app)
+        .post('/api/tag/')
+        .type('form')
+        .send({ name: 'real', description: 'good', parent: '' })
+    expect(res.status).toBe(201);
+});
+
+it('tag/ search', async () => {
+    const d = ['bat', 'bet', 'hht', 'hat', 'ate', 'ktee'];
+    for (const t of d) {
+        await request(app)
+            .post('/api/tag/')
+            .type('form')
+            .send({ name: t, description: 'good', parent: '' })
+    }
+    const res = await request(app).get('/api/tag/search/' + 'at');
+    expect(res.status).toBe(201);
+    expect(res.body.map(obj => obj.name)).toEqual(['ate', 'bat', 'hat']);
 });

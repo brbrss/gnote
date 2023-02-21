@@ -40,10 +40,12 @@ app.use(express.static(path.join(__dirname, 'public')));
   const pointRouter = require('./routes/point');
   const noteRouter = require('./routes/note');
   const searchRouter = require('./routes/search');
+  const tagRouter = require('./routes/tag');
   app.use('/', indexRouter);
   app.use('/api/users', usersRouter);
   app.use('/api/point', pointRouter);
   app.use('/api/note', noteRouter);
+  app.use('/api/tag', tagRouter);
   app.use('/api/search', searchRouter);
 }
 
