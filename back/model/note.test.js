@@ -1,5 +1,6 @@
 const { expect, test } = require('@jest/globals');
 const db = require('./db');
+const { NotFoundError, InputError } = require('./modelError');
 const Note = require('./note');
 require('dotenv').config();
 
@@ -43,6 +44,14 @@ test('find', async () => {
     const res = await Note.find(id);
     expect(res.content).toBe('bb');
     expect(new Date(res.time_event)).toEqual(new Date(1923, 4, 5));
+});
+
+test('find notfound', async () => {
+    await expect(Note.find(998876)).rejects.toThrow(NotFoundError);
+});
+
+test('add bad geo id', async () => {
+    await expect(Note.add('bb', 987, null)).rejects.toThrow(InputError);
 });
 
 test('update', async () => {

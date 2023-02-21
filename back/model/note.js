@@ -1,5 +1,5 @@
 const loadSql = require('./loadSql');
-
+const { InputError, NotFoundError } = require('./modelError');
 
 
 const Note = {};
@@ -22,8 +22,16 @@ Note.add = async function (text, geo, time) {
     geo = geo ? geo : null;
     time = time ? time : null;
     const sql = Note.sql['add'];
-    const res = await Note.client.query(sql, [geo, text, time]);
-    return res.rows[0]['myid'];
+    try {
+        const res = await Note.client.query(sql, [geo, text, time]);
+        return res.rows[0]['myid'];
+    } catch (err) {
+        if (err.constraint === 'fk_geo_in_note') {
+            throw new InputError('Invalid geo entity ID');
+        } else {
+            throw err;
+        }
+    }
 }
 
 Note.update = async function (id, text, geo, time) {
@@ -43,7 +51,11 @@ Note.delete = async function (id) {
 Note.find = async function (fid) {
     const sql = Note.sql['find'];
     const res = await Note.client.query(sql, [fid]);
-    return this.fromRow(res.rows[0]);
+    if (res.rows.length === 1) {
+        return this.fromRow(res.rows[0]);
+    } else {
+        throw new NotFoundError('Note ID not found: ' + fid);
+    }
 }
 
 Note.fromRow = function (row) {

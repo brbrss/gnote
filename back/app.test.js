@@ -62,14 +62,21 @@ it('note/ create get', async () => {
 });
 
 it('note/ create missing', async () => {
-
     const res = await request(app)
         .post('/api/note')
         .type('form')
         .send({ content: "rfvedc", geo: null});
 
     expect(res.status).toBe(400);
+});
 
+it('note/ create err', async () => {
+    const res = await request(app)
+        .post('/api/note')
+        .type('form')
+        .send({ content: "rfvedc", geo: 'ggg'});
+
+    expect(res.status).toBe(400);
 });
 
 it('note/ update', async () => {

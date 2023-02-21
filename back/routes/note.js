@@ -41,7 +41,7 @@ router.post('/', async function (req, res, next) {
         const geo = req.body.geo !== undefined ? req.body.geo : '';
         const time = req.body.time;
         if (!validNote(content, geo, time)) {
-            next(createError(400, 'Invalid input'));
+            throw createError(400, 'Invalid input');
         }
         const id = await Note.add(content, geo, time);
         res.status(201).json({ id });
@@ -63,7 +63,7 @@ router.put('/:id', async function (req, res, next) {
         const geo = req.body.geo;
         const time = req.body.time;
         if (!validNote(content, geo, time)) {
-            next(createError(400, 'Invalid input'));
+            throw createError(400, 'Invalid input');
         }
         const rowCount = await Note.update(id, content, geo, time);
         if (rowCount) {
