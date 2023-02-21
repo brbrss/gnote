@@ -8,10 +8,15 @@ var createError = require('http-errors');
 
 
 function validNote(content, geo, time) {
-    return !val.isEmpty(content)
+    const a = typeof content === 'string'
+        && typeof geo === 'string'
+        && typeof time === 'string'
+
+        && !val.isEmpty(content)
         && (val.isInt(geo) || val.isEmpty(geo))
         && (val.isISO8601(time) || val.isEmpty(time))
         ;
+    return a;
 }
 
 
@@ -33,10 +38,10 @@ router.get('/:id', async function (req, res, next) {
 router.post('/', async function (req, res, next) {
     try {
         const content = req.body.content;
-        const geo = req.body.geo;
+        const geo = req.body.geo !== undefined ? req.body.geo : '';
         const time = req.body.time;
         if (!validNote(content, geo, time)) {
-            createError(400, 'Invalid input');
+            next(createError(400, 'Invalid input'));
         }
         const id = await Note.add(content, geo, time);
         res.status(201).json({ id });
@@ -58,7 +63,7 @@ router.put('/:id', async function (req, res, next) {
         const geo = req.body.geo;
         const time = req.body.time;
         if (!validNote(content, geo, time)) {
-            createError(400, 'Invalid input');
+            next(createError(400, 'Invalid input'));
         }
         const rowCount = await Note.update(id, content, geo, time);
         if (rowCount) {

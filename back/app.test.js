@@ -61,6 +61,17 @@ it('note/ create get', async () => {
     expect(res2.body.content).toBe("rfvedc");
 });
 
+it('note/ create missing', async () => {
+
+    const res = await request(app)
+        .post('/api/note')
+        .type('form')
+        .send({ content: "rfvedc", geo: null});
+
+    expect(res.status).toBe(400);
+
+});
+
 it('note/ update', async () => {
     let id;
     {
@@ -83,6 +94,14 @@ it('note/ update', async () => {
             .get('/api/note/' + id);
         expect(res.body.content).toBe("asdf");
     }
+});
+
+it('note/ update missing', async () => {
+    const res = await request(app)
+        .put('/api/note/' + 4567)
+        .type('form')
+        .send({ content: "asdf", time: new Date(1953, 12, 3) })
+    expect(res.status).toBe(400);
 });
 
 it('note/ update error', async () => {
