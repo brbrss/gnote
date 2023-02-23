@@ -27,8 +27,8 @@ test("render", () => {
 });
 
 test("no time", () => {
-    render(<NoteCard content="O I see." tagList={['red', 'blue']} time={null} />);
+    render(<NoteCard content="O I see." tagList={['red', 'blue']} time_added={new Date()} />);
 
 
-    expect(screen.queryByText('Time added:')).not.toBeInTheDocument();
+    expect(screen.queryByText('Time event:')).not.toBeInTheDocument();
 });

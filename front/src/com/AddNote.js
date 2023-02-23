@@ -57,7 +57,8 @@ function AddNote(props) {
                 Time
                 <input type="time" name="event_time" step={1} value={state.event_time} onChange={handleInput} />
             </label>
-            <label>Location
+            <label>
+                Location
                 <input type="text" name="geo" value={state.geo} onChange={handleInput} />
             </label>
             <button type="submit" >Submit</button>

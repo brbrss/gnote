@@ -3,7 +3,7 @@ import React from 'react';
 function TagRow(props) {
     const tlist = props.tagList;
     let f = function (str) {
-        return <span>{str}</span>;
+        return <span key={str}>{str}</span>;
     }
     return tlist ? tlist.map(f) : null;
 }
