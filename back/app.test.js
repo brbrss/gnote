@@ -191,6 +191,6 @@ it('tag/ search', async () => {
             .send({ name: t, description: 'good', parent: '' })
     }
     const res = await request(app).get('/api/tag/search/' + 'at');
-    expect(res.status).toBe(201);
+    expect(res.status).toBe(200);
     expect(res.body.map(obj => obj.name)).toEqual(['ate', 'bat', 'hat']);
 });

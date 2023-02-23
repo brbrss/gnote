@@ -78,9 +78,9 @@ test('delete', async () => {
 test('find by name', async () => {
     const name = 'Moo';
     const desc = 'Some moo';
-    await Tag.add('bla','');
+    await Tag.add('bla', '');
     const id = await Tag.add(name, desc);
-    await Tag.add('wmm','');
+    await Tag.add('wmm', '');
 
     const res = await Tag.findByName(name);
     expect(res.id).toBe(id);
@@ -129,25 +129,35 @@ test('tag search', async () => {
     const d = {
         'bad 00xyp': 'b',
         'xyb': 'fff',
-        'xya': 'fff',
+        'xYa': 'fff',
         'a4': 'uuxyuu',
         'a5': null,
         'b': 'iixy',
-        'real xyi': null
+        'real xyi': null,
+        'Z': 'pp'
     };
 
     for (const k in d) {
         await Tag.add(k, d[k]);
     }
-
+    {
+        const res = await Tag.textSearch('z', 10);
+        const target = ['Z'];
+        expect(res.map(obj => obj.name)).toEqual(target);
+    }
     {
         const res = await Tag.textSearch('xy', 10);
-        const target = ['xya', 'xyb', 'bad 00xyp', 'real xyi', 'a4', 'b'];
+        const target = ['xYa', 'xyb', 'bad 00xyp', 'real xyi', 'a4', 'b'];
+        expect(res.map(obj => obj.name)).toEqual(target);
+    }
+    { // case
+        const res = await Tag.textSearch('Xy', 10);
+        const target = ['xYa', 'xyb', 'bad 00xyp', 'real xyi', 'a4', 'b'];
         expect(res.map(obj => obj.name)).toEqual(target);
     }
     {
         const res = await Tag.textSearch('xy', 3);
-        const target = ['xya', 'xyb', 'bad 00xyp'];
+        const target = ['xYa', 'xyb', 'bad 00xyp'];
         expect(res.map(obj => obj.name)).toEqual(target);
     }
 

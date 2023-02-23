@@ -1,6 +1,7 @@
 back/node_modules/*
 back/tools/*
 back/.env
+back/coverage/*
 
 front/node_modules/*
 .vscode/*

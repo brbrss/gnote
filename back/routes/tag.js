@@ -18,6 +18,23 @@ function validTag(name, description, parent) {
     return a;
 }
 
+router.get('/search/', async function (req, res, next) {
+    try {
+        throw createError(400, 'Requires input text');
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.get('/search/:t', async function (req, res, next) {
+    try {
+        const t = req.params.t;
+        const data = await Tag.textSearch(t, 10);
+        res.status(200).json(data);
+    } catch (err) {
+        next(err);
+    }
+});
 
 router.get('/:id', async function (req, res, next) {
     try {
@@ -49,14 +66,5 @@ router.post('/', async function (req, res, next) {
     }
 });
 
-router.get('/search/:t', async function (req, res, next) {
-    try {
-        const t = req.params.t;
-        const data = await Tag.textSearch(t, 10);
-        res.status(201).json(data);
-    } catch (err) {
-        next(err);
-    }
-});
 
 module.exports = router;
