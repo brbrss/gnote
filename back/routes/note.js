@@ -3,7 +3,7 @@ const router = express.Router();
 const val = require('validator');
 const Note = require('../model/note');
 var createError = require('http-errors');
-
+const Tag = require('../model/tag');
 
 
 
@@ -34,16 +34,20 @@ router.get('/:id', async function (req, res, next) {
  * response
  * 
  * id id of created record
- */
+*/
 router.post('/', async function (req, res, next) {
     try {
         const content = req.body.content;
         const geo = req.body.geo !== undefined ? req.body.geo : '';
         const time = req.body.time;
+        const tagList = req.body.tagList ? req.body.tagList : [];
         if (!validNote(content, geo, time)) {
             throw createError(400, 'Invalid input');
         }
         const id = await Note.add(content, geo, time);
+        for (const tid of tagList) {
+            await Tag.addToNote(id, tid);
+        }
         res.status(201).json({ id });
     } catch (err) {
         next(err);

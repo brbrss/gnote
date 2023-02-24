@@ -56,6 +56,16 @@ router.get('/:id', async function (req, res, next) {
     }
 });
 
+router.get('/note/:id', async function (req, res, next) {
+    try {
+        const id = req.params.id;
+        const data = await Tag.findByNote(id);
+        res.json(data);
+    } catch (err) {
+        next(err);
+    }
+});
+
 /**
  * response
  * 

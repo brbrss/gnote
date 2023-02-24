@@ -47,11 +47,19 @@ it('point/ get error', async () => {
 
 
 it('note/ create get', async () => {
+    let tid;
+    {
+        const res = await request(app)
+            .post('/api/tag/')
+            .type('form')
+            .send({ name: 'real', description: 'good', parent: '' });
+        tid = res.body.id;
+    }
 
     const res = await request(app)
         .post('/api/note')
         .type('form')
-        .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3) });
+        .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3), tagList: [tid] });
 
     expect(Number(res.body.id)).toBeGreaterThan(0);
 
@@ -193,4 +201,30 @@ it('tag/ search', async () => {
     const res = await request(app).get('/api/tag/search/' + 'at');
     expect(res.status).toBe(200);
     expect(res.body.map(obj => obj.name)).toEqual(['ate', 'bat', 'hat']);
+});
+
+it('tag/ add to note', async () => {
+    const d = ['bat', 'bet', 'hht', 'hat', 'ate', 'ktee'];
+    const dd = {};
+    for (const t of d) {
+        const res = await request(app)
+            .post('/api/tag/')
+            .type('form')
+            .send({ name: t, description: 'good', parent: '' });
+        dd[t] = res.body.id;
+    }
+    const tlist = [dd['bat'], dd['hht'], dd['bet']];
+    let nid;
+    {
+        const res = await request(app)
+            .post('/api/note')
+            .type('form')
+            .send({ content: "rfvedc", geo: null, time: new Date(1953, 12, 3), tagList: tlist });
+        nid = res.body.id;
+    }
+    {
+        const res = await request(app)
+            .get('/api/tag/note/' + nid);
+        expect(res.body.map(obj => obj.id)).toEqual(tlist);
+    }
 });
