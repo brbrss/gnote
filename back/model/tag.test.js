@@ -101,7 +101,7 @@ test('tag note', async () => {
     // note has tag
     {
         const res = await Tag.findByNote(id);
-        expect(res.map(obj => obj.name)).toEqual(['bad', 'good']);
+        expect(res.map(obj => obj.name)).toEqual(['good', 'bad']);
     }
     await Tag.removeFromNote(id, bad);
     {
@@ -131,7 +131,7 @@ test('tag note other', async () => {
     }
     {
         const res = await Tag.findByNote(id1);
-        expect(res.map(obj=>obj.name)).toEqual(['good']);
+        expect(res.map(obj => obj.name)).toEqual(['good']);
     }
 });
 
