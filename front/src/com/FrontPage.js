@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { SearchPanel } from "./SearchPanel";
-import { AddNote } from './AddNote';
+import { AddNote } from './note/AddNote';
 import { AddTag } from './tag/AddTag';
 import { AllTag } from './tag/AllTag';
 import { Routes, Route, useParams } from "react-router-dom";
-
+import { ViewNote } from './note/ViewNote';
 import { Link } from "react-router-dom";
 
 
@@ -33,6 +33,7 @@ function FrontPage() {
 
                 <Route path="/search" element={<SearchPanel />} />
                 <Route path="/addNote" element={<AddNote />} />
+                <Route path="/note/view/:id" element={<ViewNote />} />
 
             </Routes>
         </div>

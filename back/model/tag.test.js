@@ -116,6 +116,25 @@ test('tag note', async () => {
     }
 });
 
+test('tag note other', async () => {
+    const id1 = await Note.add('note text', null, null);
+    const id2 = await Note.add('other text', null, null);
+
+    const good = await Tag.add('good', 'so good');
+    const bad = await Tag.add('bad', 'so bad');
+    const ugly = await Tag.add('ugly', 'so ugly');
+
+    await Tag.addToNote(id1, good);
+    {
+        const res = await Tag.findByNote(id2);
+        expect(res).toEqual([]);
+    }
+    {
+        const res = await Tag.findByNote(id1);
+        expect(res.map(obj=>obj.name)).toEqual(['good']);
+    }
+});
+
 test('no unique tag in note', async () => {
     const id = await Note.add('note text', null, null);
     const good = await Tag.add('good', 'so good');
