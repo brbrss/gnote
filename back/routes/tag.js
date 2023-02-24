@@ -46,7 +46,7 @@ router.get('/all/', async function (req, res, next) {
     }
 });
 
-router.get('/:id', async function (req, res, next) {
+router.get('/item/:id', async function (req, res, next) {
     try {
         const id = req.params.id;
         const data = await Tag.find(id);
@@ -71,7 +71,7 @@ router.get('/note/:id', async function (req, res, next) {
  * 
  * id id of created record
  */
-router.post('/', async function (req, res, next) {
+router.post('/item', async function (req, res, next) {
     try {
         const name = req.body.name;
         const description = req.body.description;

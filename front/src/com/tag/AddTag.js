@@ -44,7 +44,7 @@ function AddTag(props) {
         }
     }
     return (
-        <form action="/api/tag/" method="POST" onSubmit={submit}>
+        <form action="/api/tag/item/" method="POST" onSubmit={submit}>
             {suc ? <div>Entry added</div> : ''}
             {errStatus ? <div>Error {errStatus}</div> : ''}
             Add New

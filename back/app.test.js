@@ -184,7 +184,7 @@ it('search/ ', async () => {
 
 it('tag/ add', async () => {
     const res = await request(app)
-        .post('/api/tag/')
+        .post('/api/tag/item/')
         .type('form')
         .send({ name: 'real', description: 'good', parent: '' })
     expect(res.status).toBe(201);
@@ -194,7 +194,7 @@ it('tag/ search', async () => {
     const d = ['bat', 'bet', 'hht', 'hat', 'ate', 'ktee'];
     for (const t of d) {
         await request(app)
-            .post('/api/tag/')
+            .post('/api/tag/item/')
             .type('form')
             .send({ name: t, description: 'good', parent: '' })
     }
