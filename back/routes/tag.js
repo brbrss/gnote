@@ -55,7 +55,7 @@ router.post('/', async function (req, res, next) {
     try {
         const name = req.body.name;
         const description = req.body.description;
-        const parent = req.body.parent;
+        const parent = '' + req.body.parent;
         if (!validTag(name, description, parent)) {
             throw createError(400, 'Invalid input');
         }

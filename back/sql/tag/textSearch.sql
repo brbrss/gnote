@@ -1,5 +1,5 @@
 
-SELECT  my_id, tag_name,tag_description FROM projnote.tag
+SELECT  my_id, tag_name,tag_description,parent_tag FROM projnote.tag
 where
 	LOWER(tag_name) like  '%' || LOWER($1)  || '%'
 	or LOWER(tag_description) like  '%' ||  LOWER($1) || '%'

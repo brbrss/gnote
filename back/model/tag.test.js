@@ -162,3 +162,22 @@ test('tag search', async () => {
     }
 
 });
+
+test('tag parent', async () => {
+    let a = { name: 'a5', description: 'a', parent: null };
+    let i0 = await Tag.add(a.name, a.description, a.parent);
+    let b = { name: 'bc', description: 'b', parent: i0 };
+    let i1 = await Tag.add(b.name, b.description, b.parent);
+    let c = { name: 'a6', description: 'c', parent: i1 };
+    let i2 = await Tag.add(c.name, c.description, c.parent);
+
+    {
+        const res = await Tag.textSearch('6', 10);
+        expect(res).toHaveLength(1);
+        expect(res[0].parent).toEqual(c.parent);
+    }
+    {
+        const res = await Tag.find(i1);
+        expect(res.parent).toBe(i0);
+    }
+});

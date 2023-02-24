@@ -17,16 +17,36 @@ function CandidateList(props) {
     );
 }
 
+function TagSpan(props) {
+    return (
+        <span>
+            {props.value.id + ' ' + props.value.name}
+            <button onClick={() => props.cb(props.value.id)}>X</button>
+            ,
+        </span>
+    );
+}
 
-/**
- * For selecting tag
- * @param {*} props
-            */
-function TagField(props) {
+function SelectedPanel(props) {
+    return (
+        <div>
+            {props.list.map(t => <TagSpan key={t.id} value={t} cb={props.removeCb} />)}
+        </div>
+    );
+}
+
+
+function TagSearch(props) {
     const [text, setText] = useState('');
-    const [value, setValue] = useState(null);
     const [get, cancel] = useMyFetch();
     const [candidateList, setcandidateList] = useState([]);
+
+    function selecteTag(tag) {
+        props.cb(tag);
+        setText('');
+        setcandidateList([]);
+    }
+
     async function typeKey(ev) {
         cancel();
         const t = ev.target.value.trim();
@@ -51,8 +71,35 @@ function TagField(props) {
     return (
         <>
             <input type="text" value={text} onChange={(typeKey)}></input>
-            {candidateList.length ? <CandidateList cb={setValue} list={candidateList} /> : ''}
+            {candidateList.length ? <CandidateList cb={selecteTag} list={candidateList} /> : ''}
         </>
+    );
+}
+
+/**
+ * For selecting tag
+ * @param {*} props
+            */
+function TagField(props) {
+    //const [selected, setSelected] = useState([]); // list of tag obj, tag:{id,name,description,parent}
+    const selected = props.selected;
+    const setSelected = props.setSelected;
+    function addTag(t) {
+        if (selected.find(item => item.id === t.id)) {
+            return;
+        }
+        setSelected(old => [...old, t]);
+    }
+    function removeTag(tid) {
+        setSelected(
+            old => old.filter(t => t.id !== tid)
+        );
+    }
+    return (
+        <div>
+            <SelectedPanel list={selected} removeCb={removeTag} />
+            <TagSearch cb={addTag} />
+        </div>
     );
 }
 

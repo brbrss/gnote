@@ -4,15 +4,25 @@ import { TagField } from './TagField';
 function AddTag(props) {
     const [state, setState] = useState({
         name: '',
-        description: '',
-        parent: ''
+        description: ''
     });
+    const [tagList, setTagList] = useState([]);
+
     function handleInput(e) {
         setState({ ...state, [e.target.name]: e.target.value })
     }
     async function submit(ev) {
         ev.preventDefault();
-        let json = JSON.stringify(state);
+        if (tagList.length > 1) {
+            console.log('too many elements: ', tagList);
+            return;
+        }
+        let data = { ...state };
+        if (tagList.length === 1) {
+            const parent = tagList[0].id;
+            data = { ...data, parent: parent };
+        }
+        let json = JSON.stringify(data);
         const res = await fetch(ev.target.action, {
             method: ev.target.method,
             headers: {
@@ -20,7 +30,6 @@ function AddTag(props) {
             },
             body: json
         });
-        props.cb(res);
     }
     return (
         <form action="/api/tag/" method="POST" onSubmit={submit}>
@@ -35,8 +44,7 @@ function AddTag(props) {
             </label>
             <label>
                 Parent Tag
-                <input type="text" name="parent" hidden value={state.event_time} onChange={handleInput} />
-                <TagField />
+                <TagField selected={tagList} setSelected={setTagList} />
             </label>
             <button type="submit" >Submit</button>
         </form>

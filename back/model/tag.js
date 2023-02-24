@@ -80,7 +80,7 @@ Tag.textSearch = async function (str, limit) {
 }
 
 Tag.fromRow = function (row) {
-    return { id: row.my_id, name: row.tag_name, description: row.tag_description };
+    return { id: row.my_id, name: row.tag_name, description: row.tag_description, parent: row.parent_tag };
 }
 
 module.exports = Tag;
