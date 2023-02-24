@@ -13,6 +13,7 @@ function Nav(props) {
         <nav>
             <Link to="/">Home</Link>
             <Link to="/tag">Tag List</Link>
+            <Link to="/addtag">Add Tag</Link>
             <Link to="/search">Search</Link>
             <Link to="/addNote">Add Note</Link>
         </nav>
@@ -28,6 +29,7 @@ function FrontPage() {
 
             <Routes>
                 <Route path="/tag" element={<AllTag />} />
+                <Route path="/addtag" element={<AddTag />} />
 
                 <Route path="/search" element={<SearchPanel />} />
                 <Route path="/addNote" element={<AddNote />} />

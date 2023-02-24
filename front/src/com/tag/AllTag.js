@@ -22,15 +22,17 @@ function AllTag(props) {
     const [data, setData] = useState([]);
     useEffect(() => {
         async function foo() {
-            const res = await get('/api/tag/all');
-            setData(await res.json());
-        } 
+            try {
+                const res = await get('/api/tag/all');
+                setData(await res.json());
+            } catch (err) {
+            }
+        }
         foo();
         return function () {
             cancel();
         };
     }, []);
-    console.log(data);
     return (<div>
         {data.map(t => <TagRow tag={t} key={t.id} />)}
     </div>);
