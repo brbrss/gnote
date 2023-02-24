@@ -36,6 +36,16 @@ router.get('/search/:t', async function (req, res, next) {
     }
 });
 
+router.get('/all/', async function (req, res, next) {
+    try {
+        const t = '';
+        const data = await Tag.textSearch(t, 10);
+        res.status(200).json(data);
+    } catch (err) {
+        next(err);
+    }
+});
+
 router.get('/:id', async function (req, res, next) {
     try {
         const id = req.params.id;
