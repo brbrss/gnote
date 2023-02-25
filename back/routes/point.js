@@ -2,6 +2,22 @@ const express = require('express');
 const router = express.Router();
 const Point = require('../model/point');
 
+
+
+router.get('/all/', async function (req, res, next) {
+    try {
+        let offset = req.body.offset;
+        let limit = req.body.limit;
+        offset = offset ? offset : 0;
+        limit = limit ? limit : 10;
+        const rows = await Point.all(0, 10);
+        res.json(rows);
+    } catch (err) {
+        next(err);
+    }
+});
+
+
 router.get('/:id', async function (req, res, next) {
     try {
         const id = req.params.id;
@@ -17,7 +33,7 @@ router.post('/', async function (req, res, next) {
         let name = req.body.name;
         let lon = req.body.lon;
         let lat = req.body.lat;
-        let comment = req.body.comment;
+        let comment = req.body.description;
         const id = await Point.add(name ? name : '', lon, lat, comment ? comment : '');
         //let id = 12345;
         res.json({ id: id });
@@ -26,17 +42,5 @@ router.post('/', async function (req, res, next) {
     }
 });
 
-router.get('/all/', async function (req, res, next) {
-    try {
-        let offset = req.body.offset;
-        let limit = req.body.limit;
-        offset = offset ? offset : 0;
-        limit = limit ? limit : 10;
-        const rows = await Point.all(0, 10);
-        res.json(rows);
-    } catch (err) {
-        next(err);
-    }
-});
 
 module.exports = router;

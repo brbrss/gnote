@@ -28,7 +28,7 @@ it('point/ put get', async () => {
     const res = await request(app)
         .post('/api/point')
         .type('form')
-        .send({ name: "hahaha", lon: 12, lat: 55, comment: 'llww' });
+        .send({ name: "hahaha", lon: 12, lat: 55, description: 'llww' });
 
     expect(res.body.id).not.toBeNull();
 

@@ -20,18 +20,18 @@ function ChangeView({ center }) {
 }
 
 function PageMap(props) {
-    //const [latlon, setLatlon] = useState(null);
+
     const latlon = props.latlon;
     const setLatlon = props.setLatlon;
 
     const goodCoord = latlon[0] !== '' && latlon[1] !== '';
-    //console.log(latlon);
+
     const center = goodCoord ? latlon : [51.505, -0.09];
-    //const zoom = 13;
+
     return (
         <MapContainer
             center={[51.505, -0.09]}
-            zoom={13} scrollWheelZoom={false}
+            zoom={13}
             style={{ height: '300px', width: '300px' }}
         >
             <ChangeView center={center} />
@@ -42,7 +42,7 @@ function PageMap(props) {
             />
             {
                 goodCoord ?
-                    <Marker position={latlon}>
+                    <Marker position={latlon} >
                         <Popup keepInView={true} maxWidth={200}>
                             A pretty CSS3 popup.  Easily customizable.  Easily customizable.  Easily customizable.  Easily customizable.  Easily customizable.
                         </Popup>
@@ -53,7 +53,12 @@ function PageMap(props) {
     );
 }
 
-function Point() {
+
+
+function AddPoint() {
+    const [name, setName] = useState('');
+    const [desc, setDesc] = useState('');
+
     const [latlon, setLatlon] = useState(['', '']);
     function setLat(ev) {
         console.log(latlon);
@@ -63,20 +68,53 @@ function Point() {
         console.log(latlon);
         setLatlon(old => [old[0], ev.target.value]);
     }
+    async function submit(ev) {
+        ev.preventDefault();
+        let object = {
+            name: name,
+            description: desc,
+            lat: latlon[0],
+            lon: latlon[1]
+        };
+        let json = JSON.stringify(object);
+        try {
+            const res = await fetch(ev.target.action, {
+                method: ev.target.method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            });
+            if (res.status !== 201) {
+                console.log(res);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
     return (
-        <>
+        <form action="/api/point/" method="POST" onSubmit={submit}>
+            <label>
+                Name
+                <input type='text' value={name} required onChange={ev => setName(ev.target.value)} />
+            </label>
+            <label>
+                Description
+                <input type='text' value={desc} onChange={ev => setDesc(ev.target.value)} />
+            </label>
             <label>
                 Lon
-                <input type='number' value={latlon[1]} onChange={setLon} />
+                <input type='number' value={latlon[1]} required onChange={setLon} />
             </label>
             <label>
                 Lat
-                <input type='number' value={latlon[0]} onChange={setLat} />
+                <input type='number' value={latlon[0]} required onChange={setLat} />
             </label>
             <br />
             <PageMap latlon={latlon} setLatlon={setLatlon} />
-        </>
+            <button type='submit'>Submit</button>
+        </form>
     );
 }
 
-export { Point };
+export { AddPoint };

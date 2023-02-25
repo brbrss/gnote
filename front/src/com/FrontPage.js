@@ -6,7 +6,10 @@ import { AllTag } from './tag/AllTag';
 import { Routes, Route, useParams } from "react-router-dom";
 import { ViewNote } from './note/ViewNote';
 import { Link } from "react-router-dom";
-import { Point } from './point';
+import { AddPoint } from './Addpoint';
+import { AllPoint } from './point/AllPoint';
+
+
 
 function Nav(props) {
     return (
@@ -16,6 +19,8 @@ function Nav(props) {
             <Link to="/addtag">Add Tag</Link>
             <Link to="/search">Search</Link>
             <Link to="/addNote">Add Note</Link>
+            <Link to="/point/add">Add Point</Link>
+            <Link to="/point/all">All Point</Link>
         </nav>
     );
 }
@@ -35,7 +40,8 @@ function FrontPage() {
                 <Route path="/addNote" element={<AddNote />} />
                 <Route path="/note/view/:id" element={<ViewNote />} />
 
-                <Route path="/point" element={<Point />} />
+                <Route path="/point/add" element={<AddPoint />} />
+                <Route path="/point/all" element={<AllPoint />} />
 
             </Routes>
         </div>
