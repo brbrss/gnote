@@ -6,7 +6,7 @@ import { AllTag } from './tag/AllTag';
 import { Routes, Route, useParams } from "react-router-dom";
 import { ViewNote } from './note/ViewNote';
 import { Link } from "react-router-dom";
-
+import { Point } from './point';
 
 function Nav(props) {
     return (
@@ -34,6 +34,8 @@ function FrontPage() {
                 <Route path="/search" element={<SearchPanel />} />
                 <Route path="/addNote" element={<AddNote />} />
                 <Route path="/note/view/:id" element={<ViewNote />} />
+
+                <Route path="/point" element={<Point />} />
 
             </Routes>
         </div>
