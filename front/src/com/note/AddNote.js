@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 //import submit from '../util/submit';
 import { TagField } from '../tag/TagField';
-
+import { AllPoint } from '../point/AllPoint';
 
 function addTime(dateStr, timeStr) {
     if (!dateStr) {
@@ -68,8 +68,9 @@ function AddNote(props) {
 
             <label>
                 Tag
-                <TagField selected={tagList} setSelected={setTagList} />
+                <TagField selected={tagList} readOnly={true} setSelected={setTagList} />
             </label>
+            <AllPoint focus={state.geo} setFocus={id => setState({ ...state, geo: id })} />
             <button type="submit" >Submit</button>
         </form>
     );

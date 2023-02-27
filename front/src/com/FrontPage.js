@@ -6,7 +6,7 @@ import { AllTag } from './tag/AllTag';
 import { Routes, Route, useParams } from "react-router-dom";
 import { ViewNote } from './note/ViewNote';
 import { Link } from "react-router-dom";
-import { AddPoint } from './Addpoint';
+import { AddPoint } from './point/Addpoint';
 import { AllPoint } from './point/AllPoint';
 
 

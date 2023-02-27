@@ -42,25 +42,27 @@ function PointMap(props) {
 
 function PointDiv(props) {
     const point = props.point;
+    function buttonCb(ev) {
+        if (props.focused) {
+            return;
+        }
+        props.setFocus(point.id);
+    }
     return (
         <div>
-            <p>
-                ID: {point.id}
-            </p>
-            {props.focused?'Focused':''}
-            <p>
-                Name: {point.name}
-            </p>
-            <p>
-                Desc:{point.desc}
-            </p>
+            <p>ID: {point.id}</p>
+            <button onClick={buttonCb}>{props.focused ? '###Focused###' : 'Select'}</button>
+            <p>Name: {point.name}</p>
+            <p>Desc:{point.desc}</p>
         </div>
     );
 }
 
-function AllPoint() {
+function AllPoint(props) {
     const [pointList, setPointList] = useState([]);
-    const [focus, setFocus] = useState(null);
+    //const [focus, setFocus] = useState(null);
+    const focus = props.focus;
+    const setFocus = props.setFocus;
 
     const [get, cancel] = useMyFetch();
     useEffect(() => {
@@ -80,7 +82,10 @@ function AllPoint() {
         <>
             Number of Points: {pointList.length}
             <div>
-                {pointList.map(p => <PointDiv point={p} focused={focus === p.id} key={p.id} />)}
+                {pointList.map(p => <PointDiv
+                    point={p} focused={focus === String(p.id)}
+                    key={p.id}
+                    setFocus={setFocus} />)}
             </div>
             <PointMap pointList={pointList} clickPoint={setFocus} />
         </>

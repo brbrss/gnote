@@ -35,7 +35,7 @@ class InputError extends Error {
     constructor(message, options) {
         super(message, options);
         this.name = 'Input Error';
-        this.error = 400;
+        this.status = 400;
     }
 }
 
