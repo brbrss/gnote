@@ -5,10 +5,10 @@ const Search = require('../model/search');
 router.post('/', async function (req, res, next) {
     try {
         const text = req.body.text;
-        const tagId = req.params.tagId;
-        const x = req.params.x;
-        const y = req.params.y;
-        const dist = req.params.dist;
+        const tagId = req.body.tagId;
+        const x = req.body.x;
+        const y = req.body.y;
+        const dist = req.body.dist;
         const param = {};
         if (text) {
             param['text'] = text;

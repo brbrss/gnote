@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
 import submit from '../util/submit';
-import { NoteCard } from './note/NoteCard';
-import { Link } from "react-router-dom";
-
+import { NoteList } from './note/NoteList';
+import { TagField } from './tag/TagField';
+import { useMyFetch } from '../util/useMyFetch';
 
 function SearchBar(props) {
-    const state = props.state;
-    const setState = props.setState;
+    const [state, setState] = useState({ text: '' });
+    const [tagList, setTagList] = useState([]);
     const [err, setErr] = useState(null);
+    // function setVal(k, v) {
+    //     setState({ ...state, [k]: v })
+    // }
     function handleInput(e) {
         setState({ ...state, [e.target.name]: e.target.value })
     }
+    const [get, cancel] = useMyFetch();
     const mySubmit = async function (ev) {
         try {
-            const res = await submit(ev);
+            ev.preventDefault();
+            let json = JSON.stringify({ ...state, tagId: tagList[0]?.id });
+            const res = await get(ev.target.action, {
+                method: ev.target.method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: json
+            });
             props.setRes(await res.json());
             setErr(null);
         } catch (e) {
             setErr(e);
+            cancel();
         }
     }
     return (
@@ -27,43 +40,23 @@ function SearchBar(props) {
                 Text
                 <input type="text" name="text" onChange={handleInput} />
             </label>
+            <label>
+                Tag
+                <TagField selected={tagList} setSelected={setTagList} />
+            </label>
             <button type="submit" >Submit</button>
         </form>
     );
 }
 
-function NoteList(props) {
-    console.log(props.noteList);
-    function F_(props) {
-        return (
-            <div>
-                <NoteCard
-                    content={props.note.content}
-                    time_added={props.note.time_added}
-                    time_event={props.note.time_event}
-                    tagList={props.note.tagList}
-                    geoId={props.note.geo_id}
-                    id={props.note.id}
-                />
-                <Link to={'/note/view/' + props.note.id}>Details</Link>
-            </div >
-        );
-    }
-    return (
-        <div>
-            {props.noteList.map(
-                (item, i) => <F_ note={item} key={item.id} />)}
-        </div>
-    );
-}
+
 
 function SearchPanel(props) {
-    const [searchParam, setSearchParam] = useState('');
     const [noteList, setNoteList] = useState([]);
 
     return (
         <div>
-            <SearchBar state={searchParam} setState={setSearchParam} setRes={setNoteList} />
+            <SearchBar setRes={setNoteList} />
             <NoteList noteList={noteList} />
         </div>
     );
