@@ -2,6 +2,13 @@ import { MapContainer, TileLayer, useMap, useMapEvent, Marker, Popup } from 'rea
 import React, { useEffect, useState } from 'react';
 import { useMyFetch } from '../../util/useMyFetch';
 
+function getPointLatlon(point) {
+    const shape = point.shape;
+    const coord = JSON.parse(shape).coordinates;
+    const latlon = [coord[1], coord[0]];
+    return latlon;
+}
+
 
 
 function MarkPoint(props) {
@@ -15,27 +22,44 @@ function MarkPoint(props) {
         <Marker position={latlon} eventHandlers={{
             click: handleMarkerClick
         }}>
-            <Popup keepInView={true} maxWidth={200}>
+            <Popup keepInView={false} maxWidth={200}>
                 {name}
             </Popup>
+
         </Marker>
     );
+}
+
+function ChangeView({ center, zoom }) {
+    const map = useMap();
+    useEffect(() => {
+        if (zoom === undefined) {
+            map.setView(center);
+        } else {
+            map.setView(center, zoom);
+        }
+    }, [center, zoom])
+    return <></>;
 }
 
 function PointMap(props) {
     const pointList = props.pointList;
     const clickPoint = props.clickPoint;
+    const center = props.center;
+    const focus = props.focus;
     return (
         <MapContainer
-            center={[51.505, -0.09]}
+            center={center}
             zoom={13}
             style={{ height: '300px', width: '300px' }}
         >
+            <ChangeView center={center} />
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {pointList.map(p => <MarkPoint point={p} key={p.id} handleClick={clickPoint} />)}
+            {pointList.map(p => <MarkPoint point={p} key={p.id} isFocus={String(p.id) === String(focus)}
+                handleClick={clickPoint} />)}
         </MapContainer>
     );
 }
@@ -62,7 +86,9 @@ function AllPoint(props) {
     const [pointList, setPointList] = useState([]);
     //const [focus, setFocus] = useState(null);
     const focus = props.focus;
-    const setFocus = props.setFocus;
+    const setFocus = props.setFocus || (() => { });
+    //const [center, setCenter] = useState([51.505, -0.09]);
+    const center = focus ? getPointLatlon(pointList.find(t => t.id === focus)) : [51.505, -0.09];
 
     const [get, cancel] = useMyFetch();
     useEffect(() => {
@@ -78,16 +104,22 @@ function AllPoint(props) {
             cancel();
         };
     }, []);
+    const selectPoint = function (pid) {
+        setFocus(pid);
+        // const p = pointList.find(t => t.id === pid);
+        // const latlon = getPointLatlon(p);
+        // setCenter(latlon);
+    }
     return (
         <>
             Number of Points: {pointList.length}
             <div>
                 {pointList.map(p => <PointDiv
-                    point={p} focused={focus === String(p.id)}
+                    point={p} focused={String(focus) === String(p.id)}
                     key={p.id}
-                    setFocus={setFocus} />)}
+                    setFocus={selectPoint} />)}
             </div>
-            <PointMap pointList={pointList} clickPoint={setFocus} />
+            <PointMap center={center} pointList={pointList} focus={focus} clickPoint={selectPoint} />
         </>
     );
 }
