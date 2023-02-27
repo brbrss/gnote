@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Search = require('../model/search');
 
+
+function validTagId(tagId){
+    return tagId !== '' && tagId !== null && Number.isInteger(Number(tagId));
+}
+
 router.post('/', async function (req, res, next) {
     try {
         const text = req.body.text;
@@ -13,7 +18,7 @@ router.post('/', async function (req, res, next) {
         if (text) {
             param['text'] = text;
         }
-        if (tagId !== '' && tagId !== null && Number.isInteger(Number(tagId))) {
+        if (tagId && tagId.every(validTagId)) {
             param['tag'] = tagId;
         }
         if (dist) {

@@ -86,12 +86,21 @@ test('search unrestricted', async () => {
 
 test('search tag', async () => {
     const tid = (await Tag.findByName('c')).id;
-    const param = { tag: tid };
+    const param = { tag: [tid] };
     const res = await Search.search(param);
     expect(res).toHaveLength(3);
     expect(res[0].content).toBe('note1');
     expect(res[1].content).toBe('note3');
     expect(res[2].content).toBe('pptr');
+});
+
+test('search multi tag', async () => {
+    const t1 = (await Tag.findByName('a')).id;
+    const t2 = (await Tag.findByName('bb')).id;
+    const param = { tag: [t2,t1] };
+    const res = await Search.search(param);
+    expect(res).toHaveLength(1);
+    expect(res[0].content).toBe('note2');
 });
 
 test('search text', async () => {

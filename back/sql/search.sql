@@ -15,10 +15,14 @@
 SELECT * from projnote.note
 WHERE 1=1
     AND ($1::text IS NULL OR mycontent LIKE '%' || $1::text ||'%' )
-    AND ($2::integer IS NULL OR myid IN 
-            (SELECT note_id 
-            FROM projnote.note_expand_tag
-            WHERE projnote.note_expand_tag.tag_id=$2::integer
+    AND ($2::int[] IS NULL OR 
+             (
+                $2::int[] <@
+                    (SELECT ARRAY(
+                        SELECT  tag_id
+                        FROM projnote.note_expand_tag 
+                        WHERE projnote.note_expand_tag.note_id=projnote.note.myid
+                    ))
             )
         )
     AND ($3::float IS NULL OR $4::float IS NULL OR $5::float IS NULL OR

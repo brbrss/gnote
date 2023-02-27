@@ -18,7 +18,7 @@ function SearchBar(props) {
     const mySubmit = async function (ev) {
         try {
             ev.preventDefault();
-            let json = JSON.stringify({ ...state, tagId: tagList[0]?.id });
+            let json = JSON.stringify({ ...state, tagId: tagList.map(obj => obj.id) });
             const res = await get(ev.target.action, {
                 method: ev.target.method,
                 headers: {
@@ -26,6 +26,10 @@ function SearchBar(props) {
                 },
                 body: json
             });
+            if (res.status !== 200) {
+                setErr(res.status);
+                return;
+            }
             props.setRes(await res.json());
             setErr(null);
         } catch (e) {

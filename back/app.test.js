@@ -175,12 +175,14 @@ it('search/ ', async () => {
             .post('/api/search')
             .type('form')
             .send('');
+        expect(res.status).toBe(200);
         expect(res.body).toHaveLength(2);
         expect(res.body[1].content).toBe('rfvedc');
     }
-
-
 });
+
+
+
 
 it('tag/ add', async () => {
     const res = await request(app)

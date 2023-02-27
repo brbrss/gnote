@@ -25,7 +25,7 @@ Search.search = async function (param) {
         const res = await this.client.query(this.sql['search'], arr);
         return res.rows.map(r => Note.fromRow(r));
     } catch (err) {
-        throw new DbConnectionError('Database error', { cause: err });
+        throw new DbConnectionError('Database error: ' + err.message, { cause: err });
     }
 }
 
