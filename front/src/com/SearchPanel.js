@@ -5,14 +5,15 @@ import { TagField } from './tag/TagField';
 import { useMyFetch } from '../util/useMyFetch';
 
 function SearchBar(props) {
-    const [state, setState] = useState({ text: '' });
+    const [state, setState] = useState({ text: '', timeStart: '', timeEnd: '' });
     const [tagList, setTagList] = useState([]);
     const [err, setErr] = useState(null);
-    // function setVal(k, v) {
-    //     setState({ ...state, [k]: v })
-    // }
+
     function handleInput(e) {
-        setState({ ...state, [e.target.name]: e.target.value })
+        setState(old => ({ ...old, [e.target.name]: e.target.value }))
+    }
+    function resetValue(name) {
+        setState(old => ({ ...old, [name]: '' }));
     }
     const [get, cancel] = useMyFetch();
     const mySubmit = async function (ev) {
@@ -47,6 +48,16 @@ function SearchBar(props) {
             <label>
                 Tag
                 <TagField selected={tagList} setSelected={setTagList} />
+            </label>
+            <label>
+                Time From:
+                <input type="date" name="timeStart" value={state.timeStart} onChange={handleInput} />
+                <button type="button" onClick={() => resetValue('timeStart')}>X</button>
+            </label>
+            <label>
+                Time To:
+                <input type="date" name="timeEnd" value={state.timeEnd} onChange={handleInput} />
+                <button type="button" onClick={() => resetValue('timeEnd')}>X</button>
             </label>
             <button type="submit" >Submit</button>
         </form>

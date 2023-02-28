@@ -3,7 +3,7 @@ const router = express.Router();
 const Search = require('../model/search');
 
 
-function validTagId(tagId){
+function validTagId(tagId) {
     return tagId !== '' && tagId !== null && Number.isInteger(Number(tagId));
 }
 
@@ -14,6 +14,8 @@ router.post('/', async function (req, res, next) {
         const x = req.body.x;
         const y = req.body.y;
         const dist = req.body.dist;
+        const timeStart = req.body.timeStart;
+        const timeEnd = req.body.timeEnd;
         const param = {};
         if (text) {
             param['text'] = text;
@@ -23,6 +25,11 @@ router.post('/', async function (req, res, next) {
         }
         if (dist) {
             param['wdist'] = { x, y, dist };
+        }
+        if (timeStart) {
+            param['timeStart'] = timeStart;
+        } if (timeEnd) {
+            param['timeEnd'] = timeEnd;
         }
         const data = await Search.search(param);
         res.json(data);

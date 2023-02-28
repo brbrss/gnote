@@ -3,7 +3,7 @@
 -- $1 text - substring in content
 ----
 -- search by tag
--- $2 integer - tag id
+-- $2 integer[] - tag id array
 ---- 
 -- search note within circle
 -- $3 float longitude of center
@@ -14,7 +14,7 @@
 
 SELECT * from projnote.note
 WHERE 1=1
-    AND ($1::text IS NULL OR mycontent LIKE '%' || $1::text ||'%' )
+    AND ($1::text IS NULL OR LOWER(mycontent) LIKE '%' || LOWER($1::text) ||'%' )
     AND ($2::int[] IS NULL OR 
              (
                 $2::int[] <@
@@ -32,5 +32,8 @@ WHERE 1=1
 			 FROM  projnote.geo_point where projnote.note.geo_id=projnote.geo_point.entity_id )
             ,$5::float)
         )
+     AND ($6::timestamp IS NULL OR $6 <= projnote.note.time_event)
+     AND ($7::timestamp IS NULL OR $7 >= projnote.note.time_event)
+
 ORDER BY myid
 ;

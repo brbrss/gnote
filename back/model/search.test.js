@@ -97,7 +97,7 @@ test('search tag', async () => {
 test('search multi tag', async () => {
     const t1 = (await Tag.findByName('a')).id;
     const t2 = (await Tag.findByName('bb')).id;
-    const param = { tag: [t2,t1] };
+    const param = { tag: [t2, t1] };
     const res = await Search.search(param);
     expect(res).toHaveLength(1);
     expect(res[0].content).toBe('note2');
@@ -135,3 +135,41 @@ test('search within distance', async () => {
     expect(res[1].content).toBe('n3');
     expect(res[2].content).toBe('n4');
 });
+
+test('search time', async () => {
+    await Note.add('xxhg', null, new Date(2304, 9, 21));
+    await Note.add('woou', null, new Date(2304, 9, 22));
+    await Note.add('ntnt', null, new Date(2304, 9, 23));
+    await Note.add('allr', null, new Date(2304, 9, 23,2,14));
+    //await Note.add('etey', null, new Date(2304, 12, 31));
+    {
+        const param = {
+            timeStart: new Date(2304,9,23)
+        };
+        const res = await Search.search(param);
+        expect(res).toHaveLength(2);
+        expect(res[0].content).toBe('ntnt');
+    }
+    {
+        const param = {
+            timeEnd: new Date(2304,9,23)
+        };
+        const res = await Search.search(param);
+        expect(res).toHaveLength(3);
+        expect(res[0].content).toBe('xxhg');
+        expect(res[1].content).toBe('woou');
+        expect(res[2].content).toBe('ntnt');
+    }
+    {
+        const param = {
+            timeStart: new Date(2304,9,22),
+            timeEnd: new Date(2304,9,24)
+        };
+        const res = await Search.search(param);
+        expect(res).toHaveLength(3);
+        expect(res[0].content).toBe('woou');
+        expect(res[1].content).toBe('ntnt');
+        expect(res[2].content).toBe('allr');
+    }
+});
+

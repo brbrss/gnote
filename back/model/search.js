@@ -19,7 +19,9 @@ Search.search = async function (param) {
         param.tag, // $2
         param?.wdist?.x, // $3
         param?.wdist?.y, // $4
-        param?.wdist?.dist // $5
+        param?.wdist?.dist, // $5
+        param?.timeStart,   //$6
+        param?.timeEnd      //$7
     ];
     try {
         const res = await this.client.query(this.sql['search'], arr);
