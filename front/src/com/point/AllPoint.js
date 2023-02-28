@@ -75,7 +75,7 @@ function PointDiv(props) {
     return (
         <div>
             <p>ID: {point.id}</p>
-            <button onClick={buttonCb}>{props.focused ? '###Focused###' : 'Select'}</button>
+            <button type="button" onClick={buttonCb}>{props.focused ? '###Focused###' : 'Select'}</button>
             <p>Name: {point.name}</p>
             <p>Desc:{point.desc}</p>
         </div>

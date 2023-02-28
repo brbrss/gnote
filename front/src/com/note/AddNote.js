@@ -16,12 +16,15 @@ function addTime(dateStr, timeStr) {
 }
 
 function AddNote(props) {
-    const [state, setState] = useState({
+    const ACTION='/api/note/';
+    const METHOD='POST';
+    const initState = {
         content: '',
         event_date: '',
         event_time: '',
         geo: ''
-    });
+    };
+    const [state, setState] = useState(initState);
     const [tagList, setTagList] = useState([]);
     function handleInput(e) {
         setState({ ...state, [e.target.name]: e.target.value })
@@ -34,20 +37,21 @@ function AddNote(props) {
             geo: state.geo,
             tagList: tagList.map(t => t.id)
         };
-        console.log(state);
+
         let json = JSON.stringify(object);
-        console.log(json);
-        const res = await fetch(ev.target.action, {
-            method: ev.target.method,
+
+        const res = await fetch(ACTION, {
+            method: METHOD,
             headers: {
                 'Content-Type': 'application/json'
             },
             body: json
         });
-        console.log(res);
+        setState(initState);
+        setTagList([]);
     }
     return (
-        <form action="/api/note/" method="POST" onSubmit={mySubmit}>
+        <form onSubmit={mySubmit}>
             Add New
             <label>
                 Content

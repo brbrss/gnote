@@ -38,7 +38,7 @@ router.get('/:id', async function (req, res, next) {
 router.post('/', async function (req, res, next) {
     try {
         const content = req.body.content;
-        const geo = req.body.geo !== undefined ? req.body.geo : '';
+        const geo = req.body.geo !== undefined ? '' + req.body.geo : '';
         const time = req.body.time;
         const tagList = req.body.tagList ? req.body.tagList : [];
         if (!validNote(content, geo, time)) {

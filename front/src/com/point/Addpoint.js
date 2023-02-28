@@ -14,7 +14,6 @@ function ListenClick(props) {
 
 function ChangeView({ center }) {
     const map = useMap();
-    console.log(map.zoom);
     map.setView(center, map.zoom);
     return null;
 }
@@ -27,7 +26,7 @@ function PageMap(props) {
     const goodCoord = latlon[0] !== '' && latlon[1] !== '';
 
     const center = goodCoord ? latlon : [51.505, -0.09];
-
+    console.log(props.message);
     return (
         <MapContainer
             center={[51.505, -0.09]}
@@ -44,7 +43,7 @@ function PageMap(props) {
                 goodCoord ?
                     <Marker position={latlon} >
                         <Popup keepInView={true} maxWidth={200}>
-                            A pretty CSS3 popup.  Easily customizable.  Easily customizable.  Easily customizable.  Easily customizable.  Easily customizable.
+                            {props.name}<br />{props.desc}
                         </Popup>
                     </Marker>
                     : null
@@ -61,11 +60,9 @@ function AddPoint() {
 
     const [latlon, setLatlon] = useState(['', '']);
     function setLat(ev) {
-        console.log(latlon);
         setLatlon(old => [ev.target.value, old[1]]);
     }
     function setLon(ev) {
-        console.log(latlon);
         setLatlon(old => [old[0], ev.target.value]);
     }
     async function submit(ev) {
@@ -111,7 +108,7 @@ function AddPoint() {
                 <input type='number' value={latlon[0]} required onChange={setLat} />
             </label>
             <br />
-            <PageMap latlon={latlon} setLatlon={setLatlon} />
+            <PageMap latlon={latlon} setLatlon={setLatlon} name={name} desc={desc} />
             <button type='submit'>Submit</button>
         </form>
     );

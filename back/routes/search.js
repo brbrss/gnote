@@ -11,9 +11,9 @@ router.post('/', async function (req, res, next) {
     try {
         const text = req.body.text;
         const tagId = req.body.tagId;
-        const x = req.body.x;
-        const y = req.body.y;
-        const dist = req.body.dist;
+        const x = req.body.lon;
+        const y = req.body.lat;
+        const dist = req.body.radius;
         const timeStart = req.body.timeStart;
         const timeEnd = req.body.timeEnd;
         const param = {};
