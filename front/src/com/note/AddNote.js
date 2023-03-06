@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-//import submit from '../util/submit';
 import { TagField } from '../tag/TagField';
 import { AllPoint } from '../point/AllPoint';
 

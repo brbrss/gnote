@@ -1,0 +1,22 @@
+version: '3.8'            # Version 3.8 is quite new and should work
+
+services:
+  app:                    # The name of the service, can be anything
+    image: mydocker/engeo # Declares which image to use
+    build: .              # Declares where to build if image is not found
+    ports:                # Declares the ports to publish
+      - 3000:3000
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: devdb
+    ports:                # Declares the ports to publish
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

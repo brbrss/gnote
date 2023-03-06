@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import submit from '../util/submit';
 import { NoteList } from './note/NoteList';
 import { TagField } from './tag/TagField';
 import { useMyFetch } from '../util/useMyFetch';
