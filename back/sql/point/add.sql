@@ -5,7 +5,7 @@
     )
 
     INSERT INTO projnote.geo_point (entity_id,shape) 
-    SELECT myid,projnote.ST_Point($2,$3,4326)
+    SELECT myid,public.ST_Point($2,$3,4326)
     FROM A 
     RETURNING entity_id
     ;

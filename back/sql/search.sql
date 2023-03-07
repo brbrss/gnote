@@ -26,8 +26,8 @@ WHERE 1=1
             )
         )
     AND ($3::float IS NULL OR $4::float IS NULL OR $5::float IS NULL OR
-        projnote.ST_DWithin(
-            projnote.ST_SetSRID(projnote.ST_MakePoint($3::float,$4::float), 4326),
+        public.ST_DWithin(
+            public.ST_SetSRID(public.ST_MakePoint($3::float,$4::float), 4326),
              (SELECT projnote.geo_point.shape 
 			 FROM  projnote.geo_point where projnote.note.geo_id=projnote.geo_point.entity_id )
             ,$5::float)
