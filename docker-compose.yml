@@ -4,8 +4,11 @@ services:
   app:                    # The name of the service, can be anything
     image: mydocker/engeo # Declares which image to use
     build: .              # Declares where to build if image is not found
+    depends_on:
+      - db
     ports:                # Declares the ports to publish
       - 3000:3000
+
   db:
     image: postgres
     restart: always

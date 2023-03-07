@@ -2,6 +2,9 @@ back/node_modules/*
 back/tools/*
 back/.env
 back/coverage/*
+back/public/index.html
+back/public/dist/*
 
+front/dist/*
 front/node_modules/*
 .vscode/*
