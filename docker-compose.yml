@@ -10,7 +10,7 @@ services:
       - 3000:3000
 
   db:
-    image: postgres
+    image: postgis/postgis:15-3.3-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: admin

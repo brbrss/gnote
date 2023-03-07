@@ -17,16 +17,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 {
-  const session = require('express-session');
-  app.use(session({
-    store: new (require('connect-pg-simple')(session))({
-      createTableIfMissing: true
-    }),
-    secret: process.env.COOKIE_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
-  }));
+  // const session = require('express-session');
+  // app.use(session({
+  //   store: new (require('connect-pg-simple')(session))({
+  //     createTableIfMissing: true
+  //   }),
+  //   secret: process.env.COOKIE_SECRET,
+  //   resave: false,
+  //   saveUninitialized: false,
+  //   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+  // }));
 }
 
 {

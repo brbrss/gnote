@@ -18,6 +18,7 @@ COPY ./back ./back
 COPY ./back/docker.env ./back/.env
 COPY --from=buildfront /usr/src/app/front/public/index.html ./back/public
 COPY --from=buildfront /usr/src/app/front/dist/bundle.js ./back/public/dist/
+COPY ./initdb.sh ./
 
 WORKDIR /usr/src/app/back/
 CMD node ./bin/www
