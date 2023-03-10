@@ -50,7 +50,7 @@ it('log in', async () => {
             .type('form')
             .send({ username: 'abcd', password: 'qwer' });;
         expect(res.status).toBe(200);
-        expect(res.body.msg).toBe('login succeeded');
+        expect(res.body.id).toBeGreaterThan(0);
     }
     {
         const res = await agent

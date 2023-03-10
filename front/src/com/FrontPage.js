@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SearchPanel } from "./SearchPanel";
 import { AddNote } from './note/AddNote';
 import { AddTag } from './tag/AddTag';
@@ -7,7 +7,9 @@ import { Routes, Route, useParams } from "react-router-dom";
 import { ViewNote } from './note/ViewNote';
 import { Link } from "react-router-dom";
 import { AddPoint } from './point/Addpoint';
-
+import { User } from './auth/user';
+import { UserContext } from '../context/UserContext';
+import { useMyFetch } from '../util/useMyFetch';
 
 
 function Nav(props) {
@@ -25,22 +27,44 @@ function Nav(props) {
 
 
 function FrontPage() {
+    const [user, setUser] = useState(null);
+    const ctxValue = { user, setUser };
+    const [get, cancel] = useMyFetch();
+    useEffect(() => {
+        async function foo() {
+            const res = await get('/api/auth');
+            if(res.status===200){
+                setUser(await res.json());
+            }else{
+                console.log(res);
+            }
+        }
+        foo();
+        return () => {
+            cancel();
+        };
+    }, []);
+
     return (
         <div>
             Front Page
             <Nav />
 
-            <Routes>
-                <Route path="/tag" element={<AllTag />} />
-                <Route path="/addtag" element={<AddTag />} />
+            <UserContext.Provider value={ctxValue}>
 
-                <Route path="/search" element={<SearchPanel />} />
-                <Route path="/addNote" element={<AddNote />} />
-                <Route path="/note/view/:id" element={<ViewNote />} />
+                <Routes>
+                    <Route path="/" element={<User />} />
+                    <Route path="/tag" element={<AllTag />} />
+                    <Route path="/addtag" element={<AddTag />} />
 
-                <Route path="/point/add" element={<AddPoint />} />
+                    <Route path="/search" element={<SearchPanel />} />
+                    <Route path="/addNote" element={<AddNote />} />
+                    <Route path="/note/view/:id" element={<ViewNote />} />
 
-            </Routes>
+                    <Route path="/point/add" element={<AddPoint />} />
+
+                </Routes>
+            </UserContext.Provider>
         </div>
     );
 }

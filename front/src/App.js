@@ -3,7 +3,6 @@ import { FrontPage } from './com/FrontPage';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
-
 function App() {
     return (
         <div>

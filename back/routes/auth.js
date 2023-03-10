@@ -35,7 +35,7 @@ router.post('/login', async function (req, res, next) {
           if (err) {
             return next(err)
           }
-          res.json({ msg: 'login succeeded' });
+          res.json(req.session.user);
         }
         );
       }).catch(err => next(err));
