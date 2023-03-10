@@ -32,10 +32,11 @@ function FrontPage() {
     const [get, cancel] = useMyFetch();
     useEffect(() => {
         async function foo() {
-            const res = await get('/api/auth');
-            if(res.status===200){
+            let res = null;
+            try {
+                res = await get('/api/auth');
                 setUser(await res.json());
-            }else{
+            } catch (er) {
                 console.log(res);
             }
         }
