@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 const { expect, test } = require('@jest/globals');
-const db = require('./model/db');
+const db = require('../model/db');
 //const Model = require('./model/model');
 
 const TAG_DATA = {
@@ -56,7 +56,7 @@ async function insertData() {
 
 beforeAll(async () => {
     db.config.database = process.env.DB_TESTDB;
-    app = require('./app');
+    app = require('../app');
 });
 
 afterAll(async () => {

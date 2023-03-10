@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
+const db = require('./model/db');
+const pg = require('pg');
+
 require('dotenv').config();
 
 // view engine setup
@@ -17,16 +20,20 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 {
-  // const session = require('express-session');
-  // app.use(session({
-  //   store: new (require('connect-pg-simple')(session))({
-  //     createTableIfMissing: true
-  //   }),
-  //   secret: process.env.COOKIE_SECRET,
-  //   resave: false,
-  //   saveUninitialized: false,
-  //   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
-  // }));
+  const pgPool = new pg.Pool({
+    ...db.config
+  });
+  const session = require('express-session');
+  app.use(session({
+    store: new (require('connect-pg-simple')(session))({
+      pool: pgPool,
+      createTableIfMissing: true
+    }),
+    secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+  }));
 }
 
 {
@@ -36,13 +43,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 {
   const indexRouter = require('./routes/index');
-  const usersRouter = require('./routes/users');
+  const authRouter = require('./routes/auth');
   const pointRouter = require('./routes/point');
   const noteRouter = require('./routes/note');
   const searchRouter = require('./routes/search');
   const tagRouter = require('./routes/tag');
-  //app.use('/', indexRouter);
-  app.use('/api/users', usersRouter);
+  app.use('/debug', indexRouter);
+  app.use('/api/auth', authRouter);
   app.use('/api/point', pointRouter);
   app.use('/api/note', noteRouter);
   app.use('/api/tag', tagRouter);

@@ -3,7 +3,7 @@ const Point = require('./point');
 const Tag = require('./tag');
 const Search = require('./search');
 const db = require('./db');
-
+const Auth = require('./auth');
 
 
 async function inject() {
@@ -12,6 +12,7 @@ async function inject() {
     Point.client = db.client;
     Tag.client = db.client;
     Search.client = db.client;
+    Auth.client = db.client;
 }
 
 async function init() {
@@ -20,6 +21,7 @@ async function init() {
     await Point.init();
     await Tag.init();
     await Search.init();
+    await Auth.init();
 }
 
 async function resetSchema() {
